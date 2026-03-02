@@ -1,5 +1,4 @@
 import { EmailMessage } from "cloudflare:email";
-import { createMimeMessage } from "mimetext";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -47,7 +46,7 @@ export default {
       return json({ ok: false, error: "Server misconfiguration: set DESTINATION_EMAIL" }, 500);
     }
 
-    const text = [
+    const body = [
       `Name: ${name}`,
       `Email: ${email}`,
       `Category: ${category}`,
@@ -56,16 +55,18 @@ export default {
       message,
     ].join("\n");
 
-    const msg = createMimeMessage();
-    msg.setSender({ name: "Dot It Down Contact", addr: from });
-    msg.setRecipient(to);
-    msg.setSubject(`Dot It Down – Contact (${category})`);
-    msg.addMessage({
-      contentType: "text/plain",
-      data: text,
-    });
+    const subject = `Dot It Down – Contact (${category})`;
+    const rawMime = [
+      `From: "Dot It Down Contact" <${from}>`,
+      `To: <${to}>`,
+      `Subject: ${subject}`,
+      "MIME-Version: 1.0",
+      "Content-Type: text/plain; charset=UTF-8",
+      "",
+      body,
+    ].join("\r\n");
 
-    const emailMessage = new EmailMessage(from, to, msg.asRaw());
+    const emailMessage = new EmailMessage(from, to, rawMime);
 
     try {
       await env.CONTACT.send(emailMessage);
