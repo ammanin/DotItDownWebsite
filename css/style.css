@@ -394,6 +394,11 @@ footer {
     transition: opacity 0.25s ease, visibility 0.25s ease;
 }
 
+/* Hidden contact form (kept for later – remove this rule and .contact-form-hidden from HTML to re-enable) */
+.modal-overlay.contact-form-hidden {
+    display: none !important;
+}
+
 .modal-overlay.is-open {
     opacity: 1;
     visibility: visible;
