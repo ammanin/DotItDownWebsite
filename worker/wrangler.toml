@@ -4,7 +4,7 @@
 # Setup:
 # 1. In Cloudflare dashboard: add your domain, enable Email Routing, add a verified destination address.
 # 2. Set SENDER_EMAIL to an address on your domain (e.g. noreply@yourdomain.com).
-# 3. Do NOT commit your personal email. Set DESTINATION_EMAIL as a Worker secret in the dashboard.
+# 3. Use a public, non-personal address on your domain (for example contact@dotitdown.app). Cloudflare Email Routing can forward this to your personal inbox.
 # 4. Deploy: from this folder run  npm install  then  npx wrangler deploy
 # 5. In Cloudflare dashboard, add a route for your zone, e.g. yourdomain.com/api/contact
 
@@ -12,11 +12,10 @@ name = "dotitdown-contact"
 main = "src/index.js"
 compatibility_date = "2024-01-01"
 
-# Where to send contact form emails (must be a verified Email Routing destination)
+# Where to send contact form emails.
+# Use an address on your domain that you are comfortable being public, such as contact@dotitdown.app.
+# You can forward that address to your personal email with Email Routing.
 [[send_email]]
 name = "CONTACT"
+destination_address = "contact@dotitdown.app"
 
-# NOTE:
-# - Configure SENDER_EMAIL and DESTINATION_EMAIL in the Cloudflare dashboard
-#   (Workers & Pages → your Worker → Settings → Variables and Secrets).
-# - Keep real values out of this repo.

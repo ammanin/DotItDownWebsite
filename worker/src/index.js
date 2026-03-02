@@ -39,12 +39,9 @@ export default {
       return json({ ok: false, error: "Missing required fields" }, 400);
     }
 
-    const from = env.SENDER_EMAIL || "noreply@example.com";
-    const to = env.DESTINATION_EMAIL;
-
-    if (!to || to === "you@example.com") {
-      return json({ ok: false, error: "Server misconfiguration: set DESTINATION_EMAIL" }, 500);
-    }
+    const from = env.SENDER_EMAIL || "noreply@dotitdown.app";
+    // Default to the public contact address configured in wrangler.toml
+    const to = env.DESTINATION_EMAIL || "contact@dotitdown.app";
 
     const body = [
       `Name: ${name}`,
