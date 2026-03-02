@@ -164,6 +164,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (!isActive) {
                 item.classList.add('active');
+                if (window.matchMedia('(max-width: 768px)').matches) {
+                    item.scrollIntoView({ behavior: 'auto', block: 'start' });
+                }
             }
             if (!featureVideo) return;
             const videoSrc = item.getAttribute('data-video');

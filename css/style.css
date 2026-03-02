@@ -614,6 +614,12 @@ footer {
     .feature-item-expandable.active .feature-video-inline {
         display: block;
     }
+    .feature-item-expandable {
+        scroll-margin-top: 5rem;
+    }
+    .feature-details ul {
+        margin-left: 2.5rem;
+    }
     .faq-question {
     padding-left: .75rem;
     gap: .75rem;
