@@ -112,6 +112,7 @@ nav a:hover, nav a.active {
 .hero-title {
     font-size: 4rem;
     line-height: 1.1;
+    margin-top: 3rem;
     margin-bottom: 2rem;
     color: var(--text-color);
 }
@@ -274,7 +275,7 @@ h2 {
 
 .feature-details ul {
     list-style: disc;
-    margin-left: 3.5rem;
+    margin-left: 2.5rem;
     margin-top: 0.5rem;
     margin-bottom: 1.5rem;
     opacity: 0.8;
@@ -341,7 +342,7 @@ h2 {
 }
 
 .faq-answer {
-    padding-left: 3rem;
+    margin-left: 3.5rem;
     margin-top: 0.5rem;
     font-size: 1.2rem;
     font-weight: 400;
@@ -575,6 +576,7 @@ footer {
     .hero-title {
         font-size: 2.5rem;
         color: var(--text-color);
+        margin-top: -1.5rem;
     }
     .label {
         margin-left: .75rem;
@@ -617,9 +619,7 @@ footer {
     .feature-item-expandable {
         scroll-margin-top: 5rem;
     }
-    .feature-details ul {
-        margin-left: 2.5rem;
-    }
+
     .faq-question {
     padding-left: .75rem;
     gap: .75rem;
@@ -630,6 +630,9 @@ footer {
         height: 24px;
         min-width: 24px;
         flex-shrink: 0;
+    }
+    .faq-answer {
+        margin-left: 1rem;
     }
     .footer-content {
         flex-direction: column-reverse;
