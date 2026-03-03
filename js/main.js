@@ -1,4 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Loading screen logic
+    const loadingScreen = document.getElementById('loading-screen');
+    const body = document.body;
+
+    function hideLoadingScreen() {
+        if (loadingScreen) {
+            loadingScreen.classList.add('fade-out');
+            body.classList.remove('loading');
+            // Remove from DOM after transition
+            setTimeout(() => {
+                loadingScreen.remove();
+            }, 500);
+        }
+    }
+
+    // Hide loading screen when everything is loaded
+    window.addEventListener('load', hideLoadingScreen);
+
+    // Fallback: hide loading screen after 5 seconds if load event hasn't fired
+    setTimeout(hideLoadingScreen, 5000);
+
     // Contact modal: open/close and form submit
     const contactTrigger = document.getElementById('contact-trigger');
     const contactModal = document.getElementById('contact-modal');
