@@ -210,4 +210,40 @@ document.addEventListener('DOMContentLoaded', () => {
     /*if (featureExpandables.length > 0) {
         featureExpandables[0].classList.add('active');
     }*/
+
+    // Quotes Slider Logic
+    const slides = document.querySelectorAll('.quote-slide');
+    const dots = document.querySelectorAll('.dot');
+    const prevBtn = document.querySelector('.quote-nav.prev');
+    const nextBtn = document.querySelector('.quote-nav.next');
+    let currentSlide = 0;
+
+    function showSlide(index) {
+        if (slides.length === 0) return;
+        
+        slides.forEach(slide => slide.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
+        
+        // Handle wrapping
+        if (index >= slides.length) currentSlide = 0;
+        else if (index < 0) currentSlide = slides.length - 1;
+        else currentSlide = index;
+
+        slides[currentSlide].classList.add('active');
+        dots[currentSlide].classList.add('active');
+    }
+
+    if (prevBtn && nextBtn) {
+        prevBtn.addEventListener('click', () => showSlide(currentSlide - 1));
+        nextBtn.addEventListener('click', () => showSlide(currentSlide + 1));
+    }
+
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => showSlide(index));
+    });
+
+    // Auto-advance every 8 seconds
+    setInterval(() => {
+        showSlide(currentSlide + 1);
+    }, 8000);
 });
