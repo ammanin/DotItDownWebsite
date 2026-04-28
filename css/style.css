@@ -442,7 +442,7 @@ h2 {
 /* Feature Detail Section */
 .feature-detail {
     padding: 6rem 0;
-    background-color: var( --text-color);
+    background-color: white;
    /* box-shadow: 0 -8px 24px rgba(110, 109, 109, 0.08), 0 8px 24px rgba(110, 109, 109, 0.08); */
 }
 
