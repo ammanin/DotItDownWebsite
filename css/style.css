@@ -3,7 +3,7 @@
 :root {
     --color-purple: #9B30FF;
     --color-porcelain: #FFFCF9;
-    --color-ink-black: #06041A;
+    --color-ink-black: #06070E;
     --color-pink: #FF3CF0;
     --color-smart-blue: #0063D6;
 
@@ -822,9 +822,9 @@ footer {
         display: none;
         width: 100%;
         border-radius: 2rem;
-        border: 8px solid #1a1a1a;
+        border: 8px solid #06070E;
         min-height: 200px;
-        background: #06041a;
+        background: #06070E;
         margin-top: 1rem;
     }
     .feature-item-expandable.active .feature-video-inline {
