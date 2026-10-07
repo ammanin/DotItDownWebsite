@@ -6,195 +6,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
-    const PALETTE = ['#9B30FF', '#FF3CF0', '#0063D6', '#FFD700', '#B366FF', '#FF8C00'];
-
-    function spawnParticleBurst(x, y, count = 14) {
-        for (let i = 0; i < count; i++) {
-            const el = document.createElement('span');
-            el.className = 'particle-burst';
-            el.style.left = x + 'px';
-            el.style.top = y + 'px';
-            el.style.background = PALETTE[i % PALETTE.length];
-            const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5;
-            const dist = 60 + Math.random() * 80;
-            el.style.setProperty('--dx', `${Math.cos(angle) * dist}px`);
-            el.style.setProperty('--dy', `${Math.sin(angle) * dist}px`);
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 900);
-        }
-    }
-
-    function initCosmicBackground() {
-        const sky = document.getElementById('sky-canvas');
-        const swirl = document.getElementById('swirl-canvas');
-        if (!sky || !swirl || reduceMotion) return;
-        const skyCtx = sky.getContext('2d');
-        const swirlCtx = swirl.getContext('2d');
-        const stars = [];
-        let w = 0, h = 0, dpr = 1, scrollY = 0, time = 0;
-
-        function resize() {
-            dpr = Math.min(window.devicePixelRatio || 1, 2);
-            w = window.innerWidth;
-            h = window.innerHeight;
-            [sky, swirl].forEach(c => {
-                c.width = w * dpr;
-                c.height = h * dpr;
-                c.style.width = w + 'px';
-                c.style.height = h + 'px';
-            });
-            skyCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-            swirlCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-            if (!stars.length) {
-                for (let i = 0; i < 130; i++) {
-                    stars.push({
-                        x: Math.random() * w,
-                        y: Math.random() * h * 2,
-                        r: Math.random() * 1.6 + 0.35,
-                        tw: Math.random() * 6.28,
-                        c: PALETTE[Math.floor(Math.random() * PALETTE.length)],
-                    });
-                }
-            }
-        }
-
-        function draw() {
-            time += 0.014;
-            scrollY = window.scrollY;
-            skyCtx.clearRect(0, 0, w, h);
-            const drift = scrollY * 0.06;
-            for (const s of stars) {
-                let y = (s.y - drift * 0.15) % (h + 16);
-                if (y < 0) y += h + 16;
-                const pulse = 0.5 + Math.sin(time * 2 + s.tw) * 0.35;
-                skyCtx.beginPath();
-                skyCtx.arc(s.x, y, s.r * pulse, 0, Math.PI * 2);
-                skyCtx.fillStyle = s.c;
-                skyCtx.globalAlpha = 0.25 + pulse * 0.5;
-                skyCtx.fill();
-            }
-            skyCtx.globalAlpha = 1;
-
-            swirlCtx.clearRect(0, 0, w, h);
-            const cx = w * 0.65 + Math.sin(time * 0.12) * 24;
-            const cy = h * 0.32 + scrollY * 0.04;
-            swirlCtx.save();
-            swirlCtx.translate(cx, cy);
-            swirlCtx.rotate(time * 0.018);
-            for (let i = 0; i < 4; i++) {
-                swirlCtx.beginPath();
-                const R = 100 + i * 50;
-                for (let a = 0; a <= Math.PI * 2; a += 0.1) {
-                    const r = R + Math.sin(a * 3 + time + i) * 22;
-                    const x = Math.cos(a) * r;
-                    const y = Math.sin(a) * r * 0.55;
-                    a === 0 ? swirlCtx.moveTo(x, y) : swirlCtx.lineTo(x, y);
-                }
-                swirlCtx.closePath();
-                swirlCtx.strokeStyle = i % 2 ? `rgba(155,48,255,${0.07 + i * 0.02})` : `rgba(0,99,214,${0.06 + i * 0.02})`;
-                swirlCtx.lineWidth = 2;
-                swirlCtx.stroke();
-            }
-            swirlCtx.restore();
-            requestAnimationFrame(draw);
-        }
-
-        resize();
-        window.addEventListener('resize', resize);
-        draw();
-    }
-
-    function initLoaderBurst() {
-        const canvas = document.getElementById('loader-particles');
-        if (!canvas || reduceMotion) return;
-        const ctx = canvas.getContext('2d');
-        const parts = [];
-        for (let i = 0; i < 40; i++) {
-            const a = (Math.PI * 2 * i) / 40;
-            parts.push({
-                x: canvas.offsetWidth / 2, y: canvas.offsetHeight / 2,
-                vx: Math.cos(a) * (1 + Math.random()),
-                vy: Math.sin(a) * (1 + Math.random()),
-                life: 1, c: PALETTE[i % PALETTE.length], r: 2 + Math.random() * 2,
-            });
-        }
-        let frames = 0;
-        function loop() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (const p of parts) {
-                p.x += p.vx; p.y += p.vy; p.life -= 0.015;
-                if (p.life <= 0) continue;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r * p.life, 0, Math.PI * 2);
-                ctx.fillStyle = p.c;
-                ctx.globalAlpha = p.life;
-                ctx.fill();
-            }
-            ctx.globalAlpha = 1;
-            if (++frames < 100) requestAnimationFrame(loop);
-        }
-        requestAnimationFrame(loop);
-    }
-
-    function initParallaxHero() {
-        if (reduceMotion) return;
-        const demo = document.querySelector('.hero-demo');
-        const copy = document.querySelector('.hero-copy');
-        if (!demo) return;
-        window.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth - 0.5) * 2;
-            const y = (e.clientY / window.innerHeight - 0.5) * 2;
-            demo.style.transform = `perspective(900px) rotateY(${x * 4}deg) rotateX(${-y * 3}deg)`;
-            if (copy) copy.style.transform = `translate(${x * -8}px, ${y * -6}px)`;
-        });
-    }
-
-    function initMeltCards() {
-        if (reduceMotion) return;
-        const cards = document.querySelectorAll('[data-melt]');
-        const onScroll = () => {
-            const vh = window.innerHeight;
-            cards.forEach(el => {
-                const r = el.getBoundingClientRect();
-                const dist = ((r.top + r.height / 2) - vh * 0.5) / vh;
-                const skew = Math.max(-2.5, Math.min(2.5, dist * 5));
-                el.style.transform = `translateY(${dist * 10}px) skewY(${skew * 0.35}deg) rotate(${skew * 0.12}deg)`;
-            });
-        };
-        window.addEventListener('scroll', onScroll, { passive: true });
-        onScroll();
-    }
-
-    function initConstellationDivider() {
-        const path = document.getElementById('constellation-path');
-        if (!path || reduceMotion) return;
-        const len = path.getTotalLength?.() || 900;
-        path.style.strokeDasharray = len;
-        path.style.strokeDashoffset = len;
-        const io = new IntersectionObserver(([e]) => {
-            if (e.isIntersecting) path.style.strokeDashoffset = '0';
-        }, { threshold: 0.25 });
-        io.observe(path.closest('.constellation-divider') || path);
-    }
-
-    function initPriceTilt() {
-        const card = document.querySelector('.glass-price');
-        if (!card || reduceMotion) return;
-        card.addEventListener('mousemove', (e) => {
-            const r = card.getBoundingClientRect();
-            const x = (e.clientX - r.left) / r.width - 0.5;
-            const y = (e.clientY - r.top) / r.height - 0.5;
-            card.style.transform = `perspective(800px) rotateX(${-y * 7}deg) rotateY(${x * 9}deg)`;
-        });
-        card.addEventListener('mouseleave', () => { card.style.transform = ''; });
-    }
-
-    initCosmicBackground();
-    initLoaderBurst();
-    initParallaxHero();
-    initMeltCards();
-    initConstellationDivider();
-    initPriceTilt();
 
     /* ---------- Loading screen ---------- */
     const loadingScreen = document.getElementById('loading-screen');
@@ -223,57 +34,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* ---------- Custom cursor + trail ---------- */
-    const cursor = document.querySelector('.orbit-cursor');
+    const cursor = document.querySelector('.dot-cursor');
     if (cursor && finePointer && !reduceMotion) {
         let mx = 0, my = 0, cx = 0, cy = 0, trailTick = 0;
-        const phoneEl = document.getElementById('demo-phone') || document.querySelector('.glass-device');
-
-        phoneEl?.addEventListener('pointerenter', () => {
-            cursor.classList.add('is-hidden');
-            cursor.classList.remove('is-active');
-            document.querySelectorAll('.trail-dot').forEach(d => d.remove());
-        });
-        phoneEl?.addEventListener('pointerleave', () => {
-            cursor.classList.remove('is-hidden');
-        });
-
         window.addEventListener('mousemove', e => {
             mx = e.clientX; my = e.clientY;
-            const r = phoneEl?.getBoundingClientRect();
-            const overPhone = !!e.target.closest('#demo-phone, .glass-device') ||
-                (r && mx >= r.left && mx <= r.right && my >= r.top && my <= r.bottom);
-
-            cursor.classList.toggle('is-hidden', overPhone);
-            if (overPhone) {
-                document.querySelectorAll('.trail-dot').forEach(d => d.remove());
-                return;
-            }
-
             if (++trailTick % 3 === 0) {
                 const d = document.createElement('span');
                 d.className = 'trail-dot';
                 d.style.left = mx + 'px';
                 d.style.top = my + 'px';
-                const hues = ['#9B30FF', '#FF3CF0', '#0063D6', '#FFD700'];
+                const hues = ['#FF3CF0', '#FF7A6B', '#FFC857', '#FF6FC1'];
                 d.style.background = hues[trailTick % hues.length];
                 document.body.appendChild(d);
                 setTimeout(() => d.remove(), 700);
             }
         });
         const raf = () => {
-            cx += (mx - cx) * 0.3;
-            cy += (my - cy) * 0.3;
+            cx += (mx - cx) * 0.22;
+            cy += (my - cy) * 0.22;
             cursor.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
             requestAnimationFrame(raf);
         };
         raf();
-        const interactive = 'a, button, input, textarea, select, .demo-task, .demo-check, .orbit-bubble, .pop-dot';
+        const interactive = 'a, button, input, textarea, select, .demo-task, .demo-check, .thought, .pop-dot';
         document.addEventListener('mouseover', e => {
-            if (e.target.closest('#demo-phone, .glass-device')) {
-                cursor.classList.add('is-hidden');
-                cursor.classList.remove('is-active');
-                return;
-            }
             if (e.target.closest(interactive)) cursor.classList.add('is-active');
         });
         document.addEventListener('mouseout', e => {
@@ -317,16 +102,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const emptyEl = document.getElementById('demo-empty');
     const phone = document.getElementById('demo-phone');
     const dateEl = document.getElementById('demo-date');
-    const tomorrowDateEl = document.getElementById('demo-tomorrow-date');
 
-    const now = new Date();
     if (dateEl) {
-        dateEl.textContent = now.toLocaleDateString(undefined, { day: 'numeric' });
-    }
-    if (tomorrowDateEl) {
-        const tomorrow = new Date(now);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        tomorrowDateEl.textContent = tomorrow.toLocaleDateString(undefined, { day: 'numeric' });
+        const now = new Date();
+        dateEl.textContent = 'TODAY';
     }
 
     const starterTasks = [
@@ -355,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function remainingCount() {
-        return list ? list.querySelectorAll('.demo-task:not(.done)').length : 0;
+        return list ? list.querySelectorAll('.demo-task:not(.completing)').length : 0;
     }
 
     function updateCount() {
@@ -363,8 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const n = remainingCount();
         countEl.textContent = n;
         if (emptyEl) {
-            const total = list ? list.querySelectorAll('.demo-task').length : 0;
-            const empty = total === 0;
+            const empty = n === 0;
             emptyEl.hidden = !empty;
             if (list) list.style.display = empty ? 'none' : 'flex';
         }
@@ -382,135 +160,27 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => pop.remove(), 450);
     }
 
-    function moveTaskWithFlip(task, reorderFn) {
-        const parent = task?.parentElement;
-        if (!parent) {
-            reorderFn?.();
-            return;
-        }
-
-        const children = Array.from(parent.children);
-        children.forEach(el => {
-            el.style.transform = '';
-            el.style.transition = '';
-        });
-
-        const firstRects = new Map();
-        children.forEach(el => {
-            firstRects.set(el, el.getBoundingClientRect());
-        });
-
-        reorderFn?.();
-
-        const newChildren = Array.from(parent.children);
-        let hasMovement = false;
-        newChildren.forEach(el => {
-            const first = firstRects.get(el);
-            if (!first) return;
-            const last = el.getBoundingClientRect();
-            const dy = first.top - last.top;
-            if (Math.abs(dy) > 0.5) {
-                hasMovement = true;
-                el.style.transform = `translateY(${dy}px)`;
-                el.style.transition = 'none';
-            }
-        });
-
-        if (!hasMovement) return;
-
-        requestAnimationFrame(() => {
-            void parent.offsetHeight;
-            newChildren.forEach(el => {
-                if (el.style.transform) {
-                    el.style.transition = 'transform 0.38s var(--spring)';
-                    el.style.transform = '';
-                }
-            });
-
-            setTimeout(() => {
-                newChildren.forEach(el => {
-                    if (el.style.transition) el.style.transition = '';
-                });
-            }, 400);
-        });
-    }
-
     function completeTask(task) {
-        if (!task || task.classList.contains('done')) return;
+        if (!task || task.classList.contains('completing')) return;
         task.classList.add('completing');
-        task.classList.add('done');
-        const check = task.querySelector('.demo-check');
-        check?.classList.add('checked');
-        if (check) {
-            const currentLabel = check.getAttribute('aria-label') || '';
-            check.setAttribute('aria-label', currentLabel.replace(/^Complete/, 'Mark incomplete'));
-        }
-
+        task.querySelector('.demo-check')?.classList.add('checked');
         spawnPop(task);
+        phone?.classList.remove('pop');
+        void phone?.offsetWidth;
+        phone?.classList.add('pop');
         playTick();
-        const r = task.getBoundingClientRect();
-        spawnParticleBurst(r.right - 16, r.top + r.height / 2, 12);
         updateCount();
-        nextTip();
-
-        const parent = task.parentElement;
-        if (!parent) return;
-
-        const siblings = Array.from(parent.children);
-        if (siblings[siblings.length - 1] === task) {
-            setTimeout(() => {
-                task.classList.remove('completing');
-            }, 280);
-            return;
-        }
-
         setTimeout(() => {
-            task.classList.remove('completing');
-            if (!task.isConnected || !task.classList.contains('done')) return;
-            moveTaskWithFlip(task, () => {
-                parent.appendChild(task);
-            });
-        }, 280);
-    }
-
-    function uncompleteTask(task) {
-        if (!task || !task.classList.contains('done')) return;
-        task.classList.remove('done');
-        task.classList.remove('completing');
-        const check = task.querySelector('.demo-check');
-        check?.classList.remove('checked');
-        if (check) {
-            const currentLabel = check.getAttribute('aria-label') || '';
-            check.setAttribute('aria-label', currentLabel.replace(/^Mark incomplete/, 'Complete'));
-        }
-
-        playTick();
-        updateCount();
-
-        const parent = task.parentElement;
-        if (!parent) return;
-
-        const firstDone = parent.querySelector('.demo-task.done');
-        if (firstDone && firstDone !== task) {
-            setTimeout(() => {
-                if (!task.isConnected || task.classList.contains('done')) return;
-                moveTaskWithFlip(task, () => {
-                    parent.insertBefore(task, firstDone);
-                });
-            }, 120);
-        }
+            task.remove();
+            updateCount();
+        }, 550);
+        nextTip();
     }
 
     list?.addEventListener('click', (e) => {
         const check = e.target.closest('.demo-check');
         if (!check) return;
-        const task = check.closest('.demo-task');
-        if (!task) return;
-        if (task.classList.contains('done')) {
-            uncompleteTask(task);
-        } else {
-            completeTask(task);
-        }
+        completeTask(check.closest('.demo-task'));
     });
 
     // Pointer swipe (one set of listeners)
@@ -518,7 +188,6 @@ document.addEventListener('DOMContentLoaded', () => {
     list?.addEventListener('pointerdown', (e) => {
         const task = e.target.closest('.demo-task');
         if (!task || e.target.closest('.demo-check')) return;
-        if (task.classList.contains('done')) return;
         swipe = { task, startX: e.clientX, dx: 0 };
         task.classList.add('dragging');
         task.setPointerCapture?.(e.pointerId);
@@ -533,10 +202,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!swipe) return;
         const { task, dx } = swipe;
         task.classList.remove('dragging');
-        task.classList.remove('swiping');
-        task.style.transform = '';
         if (dx > 88) {
+            task.style.transform = '';
             completeTask(task);
+        } else {
+            task.style.transform = '';
+            task.classList.remove('swiping');
         }
         swipe = null;
     };
@@ -598,19 +269,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const li = document.createElement('li');
         li.className = 'demo-task added';
+        const safeIcon = icon || emojiFor(val);
         li.innerHTML = `
             <button class="demo-check" aria-label="Complete ${val.replace(/"/g, '')}"></button>
+            <span class="demo-icon" aria-hidden="true"></span>
             <span class="demo-text"></span>
         `;
+        li.querySelector('.demo-icon').textContent = safeIcon;
         li.querySelector('.demo-text').textContent = val;
-
-        const firstDone = list.querySelector('.demo-task.done');
-        if (firstDone) {
-            list.insertBefore(li, firstDone);
-        } else {
-            list.appendChild(li);
-        }
-
+        list.appendChild(li);
         updateCount();
         nextTip();
     }
@@ -621,18 +288,18 @@ document.addEventListener('DOMContentLoaded', () => {
         input.value = '';
     });
 
-    document.querySelectorAll('.orbit-bubble').forEach(btn => {
+    document.querySelectorAll('.thought').forEach(btn => {
         btn.addEventListener('click', () => {
             if (btn.classList.contains('used')) return;
             btn.classList.add('used');
-            addTask(btn.dataset.task);
+            addTask(btn.dataset.task, emojiFor(btn.dataset.task || ''));
         });
     });
 
     document.getElementById('demo-reset')?.addEventListener('click', () => {
         list.innerHTML = '';
         starterTasks.forEach(t => addTask(t.text, t.icon));
-        document.querySelectorAll('.orbit-bubble.used').forEach(t => t.classList.remove('used'));
+        document.querySelectorAll('.thought.used').forEach(t => t.classList.remove('used'));
         if (tipEl) tipEl.textContent = 'welcome back. catch another thought.';
     });
 
@@ -646,21 +313,10 @@ document.addEventListener('DOMContentLoaded', () => {
         logoClicks += 1;
         if (logoClicks >= 5) {
             logo.classList.add('dance');
-            const r = logo.getBoundingClientRect();
-            spawnParticleBurst(r.left + r.width / 2, r.top + r.height / 2, 24);
+            burst(logo, '•', 10);
             setTimeout(() => logo.classList.remove('dance'), 2800);
             logoClicks = 0;
         }
-    });
-
-    document.querySelectorAll('.no-list li:not(.no-really)').forEach(li => {
-        li.addEventListener('click', () => {
-            if (li.classList.contains('popped')) return;
-            li.classList.add('popped');
-            playTick();
-            const r = li.getBoundingClientRect();
-            spawnParticleBurst(r.left + r.width / 2, r.top + r.height / 2, 10);
-        });
     });
 
     /* ---------- Footer pop-dots ---------- */
@@ -814,7 +470,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* ---------- Scroll reveals ---------- */
     const revealTargets = document.querySelectorAll(
-        '.section-title, .section-sub, .win-card, .moment-card, .day-card, .say-card, .no-list li, .nutrition-card, .price-card, .founder-note, .founder-stats, .download-buttons, .email-signup, .constellation-divider, .a-day, .watch-frame'
+        '.section-title, .section-sub, .win-card, .moment-card, .day-card, .say-card, .no-list li, .nutrition-card, .price-card, .founder-note, .founder-stats, .download-buttons, .email-signup, .doodle-divider, .a-day, .watch-frame'
     );
     revealTargets.forEach(el => el.classList.add('reveal'));
 
@@ -838,74 +494,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.25 });
     videos.forEach(v => vio.observe(v));
 
-    /* ---------- Count-up stat (months since launch) ---------- */
-    const crashStatEl = document.getElementById('crash-free-months');
-    if (crashStatEl) {
-        const startStr = crashStatEl.getAttribute('data-start-date') || '2026-03-10';
-        const [sYear, sMonth, sDay] = startStr.split('-').map(Number);
-        const startDate = new Date(sYear, sMonth - 1, sDay);
-
-        function calculateMonths() {
-            const now = new Date();
-            if (now < startDate) return 0;
-
-            let months = (now.getFullYear() - startDate.getFullYear()) * 12 + (now.getMonth() - startDate.getMonth());
-            if (now.getDate() < startDate.getDate()) {
-                const daysElapsed = (now - startDate) / (1000 * 60 * 60 * 24);
-                if (daysElapsed < months * 30) {
-                    months--;
-                }
-            }
-            return Math.max(0, months);
-        }
-
-        const targetMonths = calculateMonths();
-
-        let animated = false;
-        function runCountUp() {
-            if (animated) return;
-            animated = true;
-
-            if (reduceMotion || targetMonths === 0) {
-                crashStatEl.textContent = `${targetMonths}mo`;
-                return;
-            }
-
-            const duration = Math.min(1200, Math.max(600, targetMonths * 120));
-            const startTime = performance.now();
-
-            function frame(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(1, elapsed / duration);
-                const eased = 1 - Math.pow(1 - progress, 3);
-                const currentVal = Math.round(eased * targetMonths);
-
-                crashStatEl.textContent = `${currentVal}mo`;
-
-                if (progress < 1) {
-                    requestAnimationFrame(frame);
-                } else {
-                    crashStatEl.textContent = `${targetMonths}mo`;
-                }
-            }
-
-            requestAnimationFrame(frame);
-        }
-
-        if ('IntersectionObserver' in window) {
-            const statObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (!entry.isIntersecting) return;
-                    runCountUp();
-                    statObserver.unobserve(entry.target);
-                });
-            }, { threshold: 0.2 });
-            statObserver.observe(crashStatEl);
-        } else {
-            runCountUp();
-        }
-    }
-
     /* ---------- Smooth-scroll anchors ---------- */
     document.querySelectorAll('a[href^="#"]').forEach(a => {
         a.addEventListener('click', (e) => {
@@ -917,4 +505,107 @@ document.addEventListener('DOMContentLoaded', () => {
             t.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
         });
     });
+
+    /* ---------- Connect-the-dots (scroll-driven) ---------- */
+    const canvas = document.getElementById('connect-dots');
+        if (canvas && !reduceMotion && window.innerWidth > 780 && !document.body.classList.contains('page-privacy')) {
+        const ctx = canvas.getContext('2d');
+        const dots = [];
+        const DOT_COUNT = 16;
+
+        function hash(i, salt) {
+            const x = Math.sin(i * 127.1 + salt * 311.7) * 43758.5453;
+            return x - Math.floor(x);
+        }
+
+        function layoutDots() {
+            dots.length = 0;
+            const docH = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+            for (let i = 0; i < DOT_COUNT; i++) {
+                const side = i % 2 === 0 ? 'left' : 'right';
+                const margin = 28 + hash(i, 1) * 36;
+                dots.push({
+                    x: side === 'left' ? margin : window.innerWidth - margin,
+                    y: (docH * (0.08 + (i / (DOT_COUNT - 1)) * 0.84)),
+                    r: 2.4 + hash(i, 2) * 2.4,
+                    hue: hash(i, 3)
+                });
+            }
+        }
+
+        function sizeCanvas() {
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = window.innerWidth * dpr;
+            canvas.height = window.innerHeight * dpr;
+            canvas.style.width = window.innerWidth + 'px';
+            canvas.style.height = window.innerHeight + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            layoutDots();
+        }
+
+        function draw() {
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            ctx.clearRect(0, 0, w, h);
+            const maxScroll = Math.max(1, document.documentElement.scrollHeight - h);
+            const progress = Math.min(1, window.scrollY / maxScroll);
+            const inkY = window.scrollY + h * 0.42 + progress * h * 0.2;
+
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            for (let i = 0; i < dots.length - 1; i++) {
+                const a = dots[i];
+                const b = dots[i + 1];
+                const ay = a.y - window.scrollY;
+                const by = b.y - window.scrollY;
+                const reached = inkY > a.y;
+                if (!reached) continue;
+
+                const t = Math.max(0, Math.min(1, (inkY - a.y) / Math.max(1, b.y - a.y)));
+                const mx = a.x + (b.x - a.x) * t;
+                const my = ay + (by - ay) * t;
+                const cx1 = a.x + (b.x - a.x) * 0.35;
+                const cy1 = ay + 40 * (i % 2 === 0 ? 1 : -1);
+                const endX = t < 1 ? mx : b.x;
+                const endY = t < 1 ? my : by;
+
+                ctx.beginPath();
+                ctx.moveTo(a.x, ay);
+                ctx.quadraticCurveTo(cx1, cy1, endX, endY);
+                ctx.strokeStyle = `rgba(255, 60, 240, ${0.22 + 0.18 * (1 - i / dots.length)})`;
+                ctx.lineWidth = 1.4;
+                ctx.stroke();
+            }
+
+            dots.forEach((d, i) => {
+                const y = d.y - window.scrollY;
+                if (y < -40 || y > h + 40) return;
+                const filled = inkY > d.y;
+                ctx.beginPath();
+                ctx.arc(d.x, y, d.r, 0, Math.PI * 2);
+                if (filled) {
+                    const pal = ['#FF3CF0', '#FF7A6B', '#FFC857', '#FF6FC1'];
+                    ctx.fillStyle = pal[i % pal.length];
+                    ctx.fill();
+                } else {
+                    ctx.strokeStyle = 'rgba(255, 252, 249, 0.28)';
+                    ctx.lineWidth = 1.2;
+                    ctx.stroke();
+                }
+            });
+        }
+
+        let ticking = false;
+        function onScroll() {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => { draw(); ticking = false; });
+        }
+
+        sizeCanvas();
+        draw();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', () => { sizeCanvas(); draw(); });
+    }
 });

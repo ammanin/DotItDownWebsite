@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Catch a thought in two taps. A warm little to-do app with no streaks, no feed, no guilt. $9 once.">
+    <meta name="theme-color" content="#1E0E2E">
+    <title>Dot It Down — catch a thought in two taps</title>
+    <link rel="icon" href="../../favicon.png" sizes="32x32" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="loading">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <div id="loading-screen" class="loading-screen" aria-hidden="true">
+        <div class="loader-dot" aria-label="Loading"></div>
+        <p class="loader-caption">catching a thought…</p>
+    </div>
+
+    <canvas id="connect-dots" class="connect-dots" aria-hidden="true"></canvas>
+    <div class="dot-cursor" aria-hidden="true"></div>
+    <div class="cursor-trail" aria-hidden="true"></div>
+
+    <button id="sound-toggle" class="sound-toggle" aria-pressed="false" title="Toggle a soft tick when you complete a task">
+        <span class="sound-toggle__dot"></span>
+        <span class="sound-toggle__label">tick</span>
+    </button>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="#" class="logo" id="logo-link">
+                <span class="logo-dot" aria-hidden="true"></span>
+                Dot It Down
+            </a>
+            <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="site-nav" id="site-nav">
+                <ul>
+                    <li><a href="#try">try it</a></li>
+                    <li><a href="#not-in-here">what's not</a></li>
+                    <li><a href="#moments">moments</a></li>
+                    <li><a href="#pricing">$9</a></li>
+                    <li><a href="#download" class="nav-cta">Get it</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main">
+        <!-- 1. HERO -->
+        <section class="hero" id="try">
+            <div class="container hero-grid">
+                <div class="hero-copy">
+                    <p class="eyebrow"><span class="wink-dot"></span> a to-do app that forgets you exist between uses</p>
+                    <h1 class="hero-title">
+                        Catch a thought.<br>
+                        <span class="accent-underline">Get back to life.</span>
+                    </h1>
+                    <p class="lede">
+                        Two taps in, two taps out. No streaks, no feed, no guilt.
+                        Just a warm little notebook for the things you'll definitely forget by Thursday.
+                    </p>
+                    <div class="hero-cta-row">
+                        <a href="https://play.google.com/store/apps/details?id=com.dotitdown.app" class="btn btn-primary">
+                            <i class="fab fa-google-play" aria-hidden="true"></i>
+                            Google Play
+                        </a>
+                        <a href="#download" class="btn btn-secondary">
+                            <i class="fab fa-apple" aria-hidden="true"></i>
+                            App Store
+                        </a>
+                        <span class="cta-note">30-day trial · $9 once · no account</span>
+                    </div>
+                </div>
+
+                <div class="hero-demo" aria-label="Try Dot It Down right here">
+                    <button class="thought t1" type="button" data-task="Refill prescription" data-icon="pill">refill prescription</button>
+                    <button class="thought t2" type="button" data-task="Call the dentist" data-icon="tooth">call the dentist</button>
+                    <button class="thought t3" type="button" data-task="The thing you'll forget by Thursday" data-icon="spark">thursday thing</button>
+                    <button class="thought t4" type="button" data-task="Buy more coffee" data-icon="coffee">buy more coffee</button>
+
+                    <div class="phone" id="demo-phone">
+                        <div class="phone-notch" aria-hidden="true"></div>
+                        <div class="phone-screen">
+                            <div class="demo-header">
+                                <div>
+                                    <p class="demo-brand">Dot It Down</p>
+                                    <p class="demo-date" id="demo-date">Today</p>
+                                </div>
+                                <span class="demo-count"><span id="demo-count-num">3</span> left</span>
+                            </div>
+                            <p class="demo-hint">Try it — dot something down</p>
+
+                            <ul class="demo-list" id="demo-list">
+                                <li class="demo-task" data-icon="plant">
+                                    <button class="demo-check" aria-label="Complete Water the plants"></button>
+                                    <span class="demo-icon" aria-hidden="true">🪴</span>
+                                    <span class="demo-text">Water the plants</span>
+                                </li>
+                                <li class="demo-task" data-icon="phone">
+                                    <button class="demo-check" aria-label="Complete Text mom back"></button>
+                                    <span class="demo-icon" aria-hidden="true">💬</span>
+                                    <span class="demo-text">Text mom back</span>
+                                </li>
+                                <li class="demo-task" data-icon="bag">
+                                    <button class="demo-check" aria-label="Complete Pick up the dry cleaning"></button>
+                                    <span class="demo-icon" aria-hidden="true">👕</span>
+                                    <span class="demo-text">Pick up the dry cleaning</span>
+                                </li>
+                            </ul>
+
+                            <div class="demo-empty" id="demo-empty" hidden>
+                                <span class="demo-empty-dot" aria-hidden="true"></span>
+                                <p>all dotted down.</p>
+                                <p class="demo-empty-sub">go live your life.</p>
+                                <button type="button" id="demo-reset">bring them back</button>
+                            </div>
+
+                            <form class="demo-add" id="demo-add-form" autocomplete="off">
+                                <span class="demo-plus" aria-hidden="true">+</span>
+                                <input
+                                    id="demo-input"
+                                    type="text"
+                                    maxlength="60"
+                                    placeholder="a thursday thought…"
+                                    aria-label="Add a task">
+                                <button type="submit" class="demo-submit" aria-label="Add task">↵</button>
+                            </form>
+                            <p class="demo-tip" id="demo-tip">tip: swipe a task right to complete it →</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="marquee" aria-hidden="true">
+            <div class="marquee-track">
+                <span>refill prescription</span><span>text mom back</span><span>water the plants</span>
+                <span>call the dentist</span><span>the thing you'll forget by Thursday</span>
+                <span>mail grandma's card</span><span>buy more coffee</span><span>walk the dog</span>
+                <span>return library books (again)</span><span>pick up the dry cleaning</span>
+                <span>refill prescription</span><span>text mom back</span><span>water the plants</span>
+                <span>call the dentist</span><span>the thing you'll forget by Thursday</span>
+                <span>mail grandma's card</span><span>buy more coffee</span><span>walk the dog</span>
+                <span>return library books (again)</span><span>pick up the dry cleaning</span>
+            </div>
+        </div>
+
+        <div class="doodle-divider" aria-hidden="true">
+            <svg viewBox="0 0 1200 80" preserveAspectRatio="none">
+                <path class="draw-line" d="M0,42 C80,12 140,68 220,40 S360,8 440,44 600,78 700,38 860,4 980,46 1100,70 1200,36" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                <circle cx="220" cy="40" r="5" fill="currentColor"/>
+                <circle cx="440" cy="44" r="4" fill="currentColor"/>
+                <circle cx="700" cy="38" r="6" fill="currentColor"/>
+                <circle cx="980" cy="46" r="4" fill="currentColor"/>
+            </svg>
+        </div>
+
+        <!-- 2. SMALL WINS -->
+        <section class="small-wins">
+            <div class="container">
+                <h2 class="section-title">Small wins, actually satisfying.</h2>
+                <p class="section-sub">The kind of tactile little moments that make you open the app on purpose.</p>
+                <div class="wins-grid">
+                    <figure class="win-card">
+                        <div class="win-video">
+                            <video src="../../assets/did_on1.mp4" playsinline muted loop preload="metadata"></video>
+                        </div>
+                        <figcaption>
+                            <strong>The two-tap catch.</strong>
+                            Thought in. Thought landed. Move on.
+                        </figcaption>
+                    </figure>
+                    <figure class="win-card">
+                        <div class="win-video">
+                            <video src="../../assets/did_on4.mp4" playsinline muted loop preload="metadata"></video>
+                        </div>
+                        <figcaption>
+                            <strong>The satisfying swipe.</strong>
+                            Slide it right. Feel that tiny pop.
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. WHAT'S NOT IN HERE -->
+        <section class="not-in-here" id="not-in-here">
+            <div class="container">
+                <h2 class="section-title big">What's <em>not</em> in here.</h2>
+                <p class="section-sub">Because the best feature is the one we refused to build.</p>
+                <ul class="no-list">
+                    <li><span class="no-word">No streaks</span></li>
+                    <li><span class="no-word">No feed</span></li>
+                    <li><span class="no-word">No AI telling you what to do</span></li>
+                    <li><span class="no-word">No account</span></li>
+                    <li><span class="no-word">No cloud</span></li>
+                    <li><span class="no-word">No "you missed 3 days"</span></li>
+                    <li><span class="no-word">No 47 notifications</span></li>
+                    <li><span class="no-word">No upsell</span></li>
+                    <li class="no-really"><span class="no-word">No, really.</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 4. PRIVACY NUTRITION LABEL -->
+        <section class="privacy-label" id="privacy">
+            <div class="container">
+                <div class="privacy-header">
+                    <h2 class="section-title">Your life stays yours.</h2>
+                    <p class="section-sub">Your tasks live on your phone. Optional backups go through your own Apple or Google account. We literally cannot see them.</p>
+                </div>
+                <div class="nutrition-card">
+                    <span class="tape" aria-hidden="true"></span>
+                    <div class="nutrition-head">
+                        <span class="nutrition-eyebrow">App Privacy</span>
+                        <h3>Data Not Collected</h3>
+                        <p>The developer does not collect any data from this app.</p>
+                    </div>
+                    <div class="nutrition-grid">
+                        <div class="nutrition-cell"><span class="cell-icon" aria-hidden="true">👤</span><span>Contact Info</span><em>Not Collected</em></div>
+                        <div class="nutrition-cell"><span class="cell-icon" aria-hidden="true">📍</span><span>Location</span><em>Not Collected</em></div>
+                        <div class="nutrition-cell"><span class="cell-icon" aria-hidden="true">📇</span><span>Identifiers</span><em>Not Collected</em></div>
+                        <div class="nutrition-cell"><span class="cell-icon" aria-hidden="true">📊</span><span>Usage Data</span><em>Not Collected</em></div>
+                        <div class="nutrition-cell"><span class="cell-icon" aria-hidden="true">🩺</span><span>Health &amp; Fitness</span><em>Not Collected</em></div>
+                        <div class="nutrition-cell"><span class="cell-icon" aria-hidden="true">💳</span><span>Financial Info</span><em>Not Collected</em></div>
+                        <div class="nutrition-cell"><span class="cell-icon" aria-hidden="true">📝</span><span>User Content</span><em>Not Collected</em></div>
+                        <div class="nutrition-cell"><span class="cell-icon" aria-hidden="true">🔍</span><span>Search History</span><em>Not Collected</em></div>
+                    </div>
+                    <a href="privacy.html" class="nutrition-link">Read the full privacy policy →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. A DAY, DOTTED DOWN -->
+        <section class="a-day" id="a-day">
+            <div class="container">
+                <h2 class="section-title">A day, dotted down.</h2>
+                <p class="section-sub">Real life, in the order it happens. Leftovers wander into tomorrow on their own.</p>
+
+                <div class="day-rail" aria-hidden="true">
+                    <span class="day-rail-line"></span>
+                    <span class="day-rail-dot"></span>
+                    <span class="day-rail-dot"></span>
+                    <span class="day-rail-dot"></span>
+                    <span class="day-rail-dot"></span>
+                </div>
+
+                <div class="day-strip">
+                    <article class="day-card">
+                        <div class="day-time">7:12 am</div>
+                        <p class="day-label">morning brain</p>
+                        <ul class="day-list">
+                            <li><span>💊</span> Refill prescription</li>
+                            <li><span>☕</span> Grind coffee (out of beans??)</li>
+                            <li class="done"><span>🐕</span> Walk the dog</li>
+                        </ul>
+                    </article>
+                    <article class="day-card">
+                        <div class="day-time">12:40 pm</div>
+                        <p class="day-label">the lunch scramble</p>
+                        <ul class="day-list">
+                            <li><span>🦷</span> Call the dentist</li>
+                            <li><span>📮</span> Mail Grandma's birthday card</li>
+                            <li class="done"><span>🥗</span> Actually eat lunch</li>
+                        </ul>
+                    </article>
+                    <article class="day-card">
+                        <div class="day-time">9:03 pm</div>
+                        <p class="day-label">lights-out list</p>
+                        <ul class="day-list">
+                            <li><span>🪴</span> Water the plants</li>
+                            <li><span>📚</span> Return library books (again)</li>
+                            <li class="done"><span>💬</span> Text Sarah back</li>
+                        </ul>
+                    </article>
+                    <article class="day-card tomorrow">
+                        <div class="day-time">tomorrow</div>
+                        <p class="day-label">it carried itself</p>
+                        <ul class="day-list">
+                            <li><span>📚</span> Return library books (again)</li>
+                            <li><span>🦷</span> Call the dentist</li>
+                            <li class="ghost"><span>•</span> nothing you have to remember</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. THE MOMENTS -->
+        <section class="moments" id="moments">
+            <div class="container">
+                <h2 class="section-title">The moments.</h2>
+                <p class="section-sub">Not a feature list. A little tour of small, satisfying scenes.</p>
+                <div class="moments-grid">
+                    <article class="moment-card tilt-a">
+                        <span class="polaroid-tape" aria-hidden="true"></span>
+                        <div class="moment-video"><video src="../../assets/did_on1.mp4" playsinline muted loop preload="metadata"></video></div>
+                        <h3>The two-tap catch</h3>
+                        <p>Type "refill prescription." It lands. You're gone.</p>
+                    </article>
+                    <article class="moment-card tilt-b">
+                        <span class="polaroid-tape" aria-hidden="true"></span>
+                        <div class="moment-video"><video src="../../assets/did_on2.mp4" playsinline muted loop preload="metadata"></video></div>
+                        <h3>The graceful repeat</h3>
+                        <p>Habits that reset from the day you actually did them.</p>
+                    </article>
+                    <article class="moment-card tilt-c">
+                        <span class="polaroid-tape" aria-hidden="true"></span>
+                        <div class="moment-video"><video src="../../assets/did_on3.mp4" playsinline muted loop preload="metadata"></video></div>
+                        <h3>The quick fix</h3>
+                        <p>Tap. Edit. Done. No modal maze.</p>
+                    </article>
+                    <article class="moment-card tilt-a">
+                        <span class="polaroid-tape" aria-hidden="true"></span>
+                        <div class="moment-video"><video src="../../assets/did_on4.mp4" playsinline muted loop preload="metadata"></video></div>
+                        <h3>The in-and-out</h3>
+                        <p>Add from the widget without ever opening the app.</p>
+                    </article>
+                    <article class="moment-card tilt-b">
+                        <span class="polaroid-tape" aria-hidden="true"></span>
+                        <div class="moment-video"><video src="../../assets/did_on5.mp4" playsinline muted loop preload="metadata"></video></div>
+                        <h3>The "what was that thing"</h3>
+                        <p>Search the calendar. Find the old task. Sleep easier.</p>
+                    </article>
+                    <article class="moment-card tilt-c">
+                        <span class="polaroid-tape" aria-hidden="true"></span>
+                        <div class="moment-video"><video src="../../assets/did_on6.mp4" playsinline muted loop preload="metadata"></video></div>
+                        <h3>The glance</h3>
+                        <p>Home-screen widget. One look. That's the whole feature.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. PRICING -->
+        <section class="pricing" id="pricing">
+            <div class="container">
+                <div class="price-card">
+                    <div class="price-stamp">
+                        <span class="price-big">$9</span>
+                        <span class="price-once">once.</span>
+                    </div>
+                    <ul class="price-lines">
+                        <li>That's it.</li>
+                        <li>No subscription. No "Pro tier." No catch.</li>
+                        <li><em>(Free for 30 days first, because you should actually like it.)</em></li>
+                    </ul>
+                    <a href="#download" class="btn btn-primary big">Get Dot It Down</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. TESTIMONIALS -->
+        <section class="say" id="say">
+            <div class="container">
+                <h2 class="section-title">What people say.</h2>
+                <p class="section-sub">Real quotes. Real phones. Real lives that got a little quieter.</p>
+                <div class="say-grid">
+                    <figure class="say-card note-pink">
+                        <blockquote>"A really cool feature is when you slide a task to the right, it completes it. It's <em>satisfying</em> to slide."</blockquote>
+                        <figcaption>— Diya M. · iPhone 13 · switched from Reminders</figcaption>
+                    </figure>
+                    <figure class="say-card note-honey">
+                        <blockquote>"Looks sweet. I really like the color and UI!"</blockquote>
+                        <figcaption>— Mark C. · Pixel 8</figcaption>
+                    </figure>
+                    <figure class="say-card note-coral">
+                        <blockquote>"Quick-add makes adding tasks so frictionless. I love that incomplete tasks are auto-pushed to the next day."</blockquote>
+                        <figcaption>— Ammani N. · been using it 4 months</figcaption>
+                    </figure>
+                    <figure class="say-card note-cream">
+                        <blockquote>"It's been really good for me, especially during my exams."</blockquote>
+                        <figcaption>— Diya M. · student</figcaption>
+                    </figure>
+                </div>
+                <p class="review-link"><a href="https://play.google.com/store/apps/details?id=com.dotitdown.app">See more on Google Play →</a></p>
+            </div>
+        </section>
+
+        <!-- 9. FOUNDER -->
+        <section class="founder" id="founder">
+            <div class="container founder-inner">
+                <div class="founder-note">
+                    <p class="founder-eyebrow">Made by one person</p>
+                    <h2 class="section-title">A note, from me.</h2>
+                    <p>Hi — I'm the whole team. One dev, one designer, one QA, one everything.</p>
+                    <p>
+                        I built Dot It Down because every other to-do app kept trying to become
+                        a productivity <em>lifestyle</em>. Streaks. Feeds. "You missed 3 days!"
+                        I just wanted somewhere to put a thought before it fell out of my head.
+                    </p>
+                    <p>
+                        So: one-time price, no data leaves your phone, no account, no dashboards
+                        for me to stare at. Built quietly with a lot of coffee and a little AI.
+                        Zero crashes in seven months. Not trying to scale — trying to be <em>useful</em>.
+                    </p>
+                    <p>If it helps you carry the day a little lighter, I'll consider it a win.</p>
+                    <p class="founder-sign">— Adam</p>
+                </div>
+                <aside class="founder-stats">
+                    <div><span class="big-num">1</span><span>person building it</span></div>
+                    <div><span class="big-num">0</span><span>data points collected</span></div>
+                    <div><span class="big-num">7mo</span><span>zero crashes</span></div>
+                    <div><span class="big-num">$9</span><span>once, forever</span></div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- 10. DOWNLOAD + EMAIL -->
+        <section class="download" id="download">
+            <div class="container download-inner">
+                <h2 class="section-title huge">Dot something down.</h2>
+                <p class="section-sub">Two taps in. Two taps out. Get back to life.</p>
+                <div class="download-buttons">
+                    <a href="https://play.google.com/store/apps/details?id=com.dotitdown.app" class="btn btn-primary big">
+                        <i class="fab fa-google-play" aria-hidden="true"></i>
+                        Google Play
+                    </a>
+                    <a href="#download" class="btn btn-secondary big">
+                        <i class="fab fa-apple" aria-hidden="true"></i>
+                        App Store
+                    </a>
+                </div>
+                <form class="email-signup" id="email-signup">
+                    <label for="email-input">Occasionally I'll send a note. No spam, no tracking, unsubscribe anytime.</label>
+                    <div class="email-row">
+                        <input id="email-input" type="email" placeholder="you@somewhere.com" required>
+                        <button type="submit">Say hi</button>
+                    </div>
+                    <p class="email-status" id="email-status" aria-live="polite"></p>
+                </form>
+            </div>
+        </section>
+
+        <!-- Optional full walkthrough -->
+        <section class="watch-section" id="watch">
+            <div class="container">
+                <h2 class="section-title">The whole tour, if you want it.</h2>
+                <p class="section-sub">Most people won't. That's fine. It's here for the "show me everything" person.</p>
+                <div class="watch-frame" id="watch-frame">
+                    <button type="button" class="watch-play" id="watch-play" aria-label="Play the full walkthrough">
+                        <img src="../../assets/hero.png" alt="Dot It Down on two phones">
+                        <span class="play-orb" aria-hidden="true">▶</span>
+                        <span class="watch-caption">play the walkthrough</span>
+                    </button>
+                    <video id="watch-video" src="../../assets/didvideofinal.mp4" playsinline controls preload="none" hidden poster="../../assets/hero.png"></video>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="faq" id="faq">
+            <div class="container">
+                <h2 class="section-title">A couple things people ask.</h2>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span class="faq-dot"></span>
+                        How is it private and offline?
+                        <span class="faq-toggle">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        Your tasks live on your phone. Optional backups go through your own Apple or Google account. We literally cannot see them. Turn auto-backup off in settings to keep everything on-device.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span class="faq-dot"></span>
+                        Really no subscription?
+                        <span class="faq-toggle">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        Really. $9 once (or the equivalent in your currency). It works fully offline, so there's no server cost to pay for.
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div>
+                <a href="#" class="footer-logo">
+                    <span class="logo-dot" aria-hidden="true"></span>
+                    Dot It Down
+                </a>
+                <p class="footer-tag">Quick tasks. Lasting habits.</p>
+                <p class="footer-links">
+                    <a href="#" id="contact-trigger">Contact</a>
+                    <span>·</span>
+                    <a href="privacy.html">Privacy</a>
+                </p>
+            </div>
+            <div class="footer-dots" aria-hidden="true">
+                <button type="button" class="pop-dot"></button>
+                <button type="button" class="pop-dot"></button>
+                <button type="button" class="pop-dot"></button>
+                <button type="button" class="pop-dot"></button>
+                <button type="button" class="pop-dot"></button>
+            </div>
+            <p class="footer-fine">© Dot It Down. Made in a small room with a large window.</p>
+        </div>
+    </footer>
+
+    <div id="contact-modal" class="modal-overlay" aria-hidden="true">
+        <div class="modal" role="dialog" aria-labelledby="contact-modal-title">
+            <button type="button" class="modal-close" aria-label="Close contact form">&times;</button>
+            <p class="founder-eyebrow">a note for Adam</p>
+            <h2 id="contact-modal-title" class="modal-title">Say hi.</h2>
+            <form id="contact-form" class="contact-form" action="/api/contact" method="POST">
+                <label for="contact-name">Name</label>
+                <input type="text" id="contact-name" name="name" required placeholder="Your name">
+                <label for="contact-email">Email</label>
+                <input type="email" id="contact-email" name="email" required placeholder="your@email.com">
+                <label for="contact-category">Category</label>
+                <select id="contact-category" name="category" required>
+                    <option value="">what's this about?</option>
+                    <option value="General">Just saying hi</option>
+                    <option value="Support">Something's broken</option>
+                    <option value="Feedback">A thought about the app</option>
+                    <option value="Partnership">Partnership</option>
+                    <option value="Other">Something else</option>
+                </select>
+                <label for="contact-message">Message</label>
+                <textarea id="contact-message" name="message" rows="4" required placeholder="Your message"></textarea>
+                <div id="contact-form-status" class="form-status" aria-live="polite"></div>
+                <button type="submit" class="btn-submit">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

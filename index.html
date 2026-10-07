@@ -3,271 +3,487 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dot It Down</title>
+    <meta name="description" content="Catch a thought in two taps. A warm little to-do app with no streaks, no feed, no guilt. $9 once.">
+    <meta name="theme-color" content="#06070E">
+    <title>Dot It Down to get back to life</title>
     <link rel="icon" href="favicon.png" sizes="32x32" type="image/png">
+    <link rel="stylesheet" href="css/fonts.css">
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/typography.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="loading">
-    <div id="loading-screen" class="loading-screen">
-        <div class="loader"></div>
+    <a class="skip-link" href="#main">Skip to content</a>
 
+    <div id="loading-screen" class="loading-screen" aria-hidden="true">
+        <canvas id="loader-particles" class="loader-particles" aria-hidden="true"></canvas>
+        <div class="loader-orb" aria-label="Loading"></div>
+        <p class="loader-caption">catching a thought…</p>
     </div>
-    <div class="container">
-        <header>
-            <a href="#" class="logo">DOT IT DOWN</a>
-            <nav>
+
+    <div class="void-bg" aria-hidden="true"></div>
+    <canvas id="sky-canvas" class="sky-canvas" aria-hidden="true"></canvas>
+    <canvas id="swirl-canvas" class="swirl-canvas" aria-hidden="true"></canvas>
+    <div class="orbit-cursor" aria-hidden="true"></div>
+<!--
+    <button id="sound-toggle" class="sound-toggle" aria-pressed="false" title="Toggle website on screen animations">
+        <span class="sound-toggle__dot"></span>
+        <span class="sound-toggle__label">Animations</span>
+    </button>
+-->
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="header-left">
+            <a href="#top" class="logo" id="logo-link">
+                <span class="logo-dot" aria-hidden="true">
+                    <span class="logo-dot__glass" aria-hidden="true"></span>
+                    <span class="logo-dot__edge" aria-hidden="true"></span>
+                    <span class="logo-dot__specular" aria-hidden="true"></span>
+                    <span class="logo-dot__plus" aria-hidden="true">+</span>
+                </span>
+                DOT IT DOWN
+            </a>
+            <a href="#pricing" class="header-link">
+                Price
+            </a>
+            <a href="#support" class="header-link">
+                Support
+            </a>
+        </div>
+            <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+                <span></span><span></span><span></span>
+            </button>
+
+            <nav class="site-nav" id="site-nav">
                 <ul>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#faq">FAQ</a></li>
-                    <!-- <li><a href="#" class="active">Home</a></li> -->
+                    <li>
+                        <a href="https://play.google.com/store/apps/details?id=com.dotitdown.app" class="glass-btn">
+                            <span class="glass-btn__glass" aria-hidden="true"></span>
+                            <span class="glass-btn__edge" aria-hidden="true"></span>
+                            <span class="glass-btn__specular" aria-hidden="true"></span>
+                            <span class="glass-btn__press" aria-hidden="true"></span>
+                            <span class="glass-btn__content">
+                                <i class="fab fa-google-play" aria-hidden="true"></i>
+                                Google Play
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://apps.apple.com/us/app/dot-it-down/id6793665202" class="glass-btn">
+                            <span class="glass-btn__glass" aria-hidden="true"></span>
+                            <span class="glass-btn__edge" aria-hidden="true"></span>
+                            <span class="glass-btn__specular" aria-hidden="true"></span>
+                            <span class="glass-btn__press" aria-hidden="true"></span>
+                            <span class="glass-btn__content">
+                                <i class="fab fa-apple" aria-hidden="true"></i>
+                                App Store
+                            </span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
-        </header>
+        </div>
+    </header>
 
-        <section class="hero">
-            <div class="hero-content">
-                <h1 class="hero-title">SIMPLY PRODUCTIVE.<br>Quick tasks →<br>lasting habits.</h1>
-                <div class="download-cta">
-                    <a href="https://play.google.com/store/apps/details?id=com.dotitdown.app" class="btn-download">
-                        <i class="fab fa-google-play" aria-hidden="true"></i>
-                        Download on Google Play
-                    </a>
-                    <p class="label">30-Day Trial. One Time Payment.</p>
+    <main id="main">
+        <!-- 1. HERO -->
+        <section class="hero" id="try">
+            <div class="constellation-divider" aria-hidden="true">
+                <svg viewBox="0 0 1200 15" preserveAspectRatio="none">
+                </svg>
+            </div>
+            <div class="container hero-grid">
+                <div class="hero-copy">
+                    <!--<p class="eyebrow">a to-do app for the everyday</p>-->
+                    <h1 class="hero-title">
+                        Catch a thought.<br>
+                        <span class="accent-underline">Get back to life.</span>
+                    </h1>
+                    <p class="lede">
+                        A simple to-do app for all the little things you’re carrying in your head. Dot them down, knowing they’re there when you’re ready.
+                    </p>
+                    <div class="hero-cta-row">
+                        <a href="https://play.google.com/store/apps/details?id=com.dotitdown.app" class="glass-btn">
+                            <span class="glass-btn__glass" aria-hidden="true"></span>
+                            <span class="glass-btn__edge" aria-hidden="true"></span>
+                            <span class="glass-btn__specular" aria-hidden="true"></span>
+                            <span class="glass-btn__press" aria-hidden="true"></span>
+                            <span class="glass-btn__content">
+                                <i class="fab fa-google-play" aria-hidden="true"></i>
+                                Google Play
+                            </span>
+                        </a>
+                        <a href="https://apps.apple.com/us/app/dot-it-down/id6793665202" class="glass-btn">
+                            <span class="glass-btn__glass" aria-hidden="true"></span>
+                            <span class="glass-btn__edge" aria-hidden="true"></span>
+                            <span class="glass-btn__specular" aria-hidden="true"></span>
+                            <span class="glass-btn__press" aria-hidden="true"></span>
+                            <span class="glass-btn__content">
+                                <i class="fab fa-apple" aria-hidden="true"></i>
+                                App Store
+                            </span>
+                        </a>
+                        <span class="cta-note">21 days free · $14.99 once · No subscription</span>
+                    </div>
+                </div>
+
+                <div class="hero-demo" aria-label="Try Dot It Down right here">
+                    <button class="orbit-bubble ob1" type="button" data-task="refill prescription">refill prescription</button>
+                    <button class="orbit-bubble ob2" type="button" data-task="call the dentist">call the dentist</button>
+                    <button class="orbit-bubble ob3" type="button" data-task="fix front step">fix front step</button>
+                    <button class="orbit-bubble ob4" type="button" data-task="buy more coffee">buy more coffee</button>
+
+                    <div class="glass-device" id="demo-phone" data-melt>
+                        <div class="glass-notch" aria-hidden="true"></div>
+                        <div class="glass-screen">
+                            <div aria-hidden="true" style="height: var(--space-sm);"></div>
+                            <div class="demo-header">
+                                <div>
+                                    <p class="demo-brand">TODAY</p>
+                                </div>
+                                <p class="demo-brand" id="demo-date"></p>
+                            </div>
+                            <ul class="demo-list" id="demo-list">
+                                <li class="demo-task" data-icon="plant">
+                                    <button class="demo-check" aria-label="Complete Water the plants"></button>
+                                    <span class="demo-text">💦🪴🌻🌿🌵</span>
+                                </li>
+                                <li class="demo-task" data-icon="phone">
+                                    <button class="demo-check" aria-label="Complete Text mom back"></button>
+                                    <span class="demo-text">text mom back</span>
+                                </li>
+                                <li class="demo-task" data-icon="bag">
+                                    <button class="demo-check" aria-label="Complete Pick up the dry cleaning"></button>
+                                    <span class="demo-text">pick up dry cleaning</span>
+                                </li>
+                            </ul>
+                            <span class="demo-divider" aria-hidden="true"></span>
+                            <div class="demo-header">
+                                <div>
+                                    <p class="demo-brand">TOMORROW</p>
+                                </div>
+                                <p class="demo-brand" id="demo-tomorrow-date"></p>
+                            </div>
+                            <!--
+                            <div class="demo-empty" id="demo-empty" hidden>
+                                <span class="demo-empty-dot" aria-hidden="true"></span>
+                                <p>all dotted down.</p>
+                                <p class="demo-empty-sub">go live your life.</p>
+                                <button type="button" id="demo-reset">bring them back</button>
+                            </div>
+
+                            <form class="demo-add" id="demo-add-form" autocomplete="off">
+                                <span class="demo-plus" aria-hidden="true">+</span>
+                                <input
+                                    id="demo-input"
+                                    type="text"
+                                    maxlength="60"
+                                    placeholder="a thursday thought…"
+                                    aria-label="Add a task">
+                                <button type="submit" class="demo-submit" aria-label="Add task">↵</button>
+                            </form>     
+                            -->
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="hero-image">
-                <img src="assets/hero.png" alt="Dot It Down App Screenshot">
+            <div class="constellation-divider" aria-hidden="true">
+                <svg viewBox="0 0 1200 240" preserveAspectRatio="none">
+                </svg>
+            </div>
+            <div class="container">
+                <h2 class="section-title">A day, dotted down</h2>
+                <p class="section-sub">For passing thoughts, last minute errands, and things that can wait till tomorrow.</p>
+    
+                <div class="day-rail" aria-hidden="true">
+                    <span class="day-rail-line"></span>
+                    <span class="day-rail-dot"></span>
+                    <span class="day-rail-dot"></span>
+                    <span class="day-rail-dot"></span>
+                    <span class="day-rail-dot"></span>
+                </div>
+    
+                <div class="day-strip">
+                    <article class="day-card glass-card" data-melt>
+                        <div class="day-time">Last Night</div>
+                        <p class="day-label">checking in for the next day</p>
+                        <ul class="day-list">
+                            <li>Refill prescription</li>
+                            <li class="done">Walk the dog ↻</li>
+                            <li class="done">Text Cec back</li>
+                            <li class="done">Clean litter box</li>
+                        </ul>
+                    </article>
+                    <article class="day-card glass-card" data-melt>
+                        <div class="day-time">This Morning</div>
+                        <p class="day-label">get the morning brain moving</p>
+                        <ul class="day-list">
+                            <li>Lunch with El ∙</li>
+                            <li>Walk the dog ↻</li>
+                            <li>Refill prescription</li>
+                        </ul>
+                    </article>
+                    <article class="day-card glass-card" data-melt>
+                        <div class="day-time">This Evening</div>
+                        <p class="day-label">handled some last minute chores </p>
+                        <ul class="day-list">
+                            <li>Refill prescription</li>
+                            <li class="done">Walk the dog ↻</li>
+                            <li class="done">Change dentist appt</li>
+                            <li class="done">Lunch with El ∙</li>
+                        </ul>
+                    </article>
+                    <article class="day-card tomorrow glass-card" data-melt>
+                        <div class="day-time">Tomorrow AM</div>
+                        <p class="day-label">it carried itself</p>
+                        <ul class="day-list">
+                            <li>Refill prescription</li>
+                            <li>💦🪴🌻🌿🌵 ↻ </li>
+                            <li class="done">Walk the dog ↻</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+            <div class="constellation-divider" aria-hidden="true">
+                <svg viewBox="0 0 1200 30" preserveAspectRatio="none">
+                </svg>
             </div>
         </section>
-    </div>
 
-    <section class="section-white">
-        <div class="container">
-            <div class="features-grid">
-                <div class="feature-list">
-                    <h2>For us scattered thinkers</h2>
-                    <p class="body-text">One place for quick tasks and routine habits. Add tasks, spot the pattern, make a routine. Stay ahead.</p>
-                </div>
-                <div class="feature-list">
-                    <div class="feature-item">
-                        <span class="feature-check-icon" aria-hidden="true">
-                            <i class="fa-regular fa-square"></i>
-                            <i class="fa-solid fa-check"></i>
-                        </span>
-                        private
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-check-icon" aria-hidden="true">
-                            <i class="fa-regular fa-square"></i>
-                            <i class="fa-solid fa-check"></i>
-                        </span>
-                        offline
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-check-icon" aria-hidden="true">
-                            <i class="fa-regular fa-square"></i>
-                            <i class="fa-solid fa-check"></i>
-                        </span>
-                        ad-free
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-check-icon" aria-hidden="true">
-                            <i class="fa-regular fa-square"></i>
-                            <i class="fa-solid fa-check"></i>
-                        </span>
-                        no subscription
-                    </div>
-                </div>
-            </div>
-            <h3>What users say</h3>
-            <div class="quotes-slider">
-                <button class="quote-nav prev" aria-label="Previous quote">
-                    <i class="fa-solid fa-chevron-left"></i>
-                </button>
-                <div class="quotes-container">
-                    <div class="quote-slide active">
-                        <p class="quote-text">"A really cool feature in the list of tasks is when you slide a task to the right, it completes it. It's satisfying to slide."</p>
-                        <p class="quote-author">Diya M.</p>
-                    </div>
-                    <div class="quote-slide">
-                        <p class="quote-text">"Looks sweet. I really like the COLOR and UI!"</p>
-                        <p class="quote-author">Mark C.</p>
-                    </div>
-                    <div class="quote-slide">
-                        <p class="quote-text">"Quick add makes adding tasks so frictionless and I love that incomplete tasks are auto pushed to the next day."</p>
-                        <p class="quote-author">Ammani N.</p>
-                    </div>
-                    <div class="quote-slide">
-                        <p class="quote-text">"It's been really good for me especially during my exams."</p>
-                        <p class="quote-author">Diya M.</p>
-                    </div>
-                </div>
-                <button class="quote-nav next" aria-label="Next quote">
-                    <i class="fa-solid fa-chevron-right"></i>
-                </button>
-            </div>
-        </div>
-    </section>
 
-    <section class="video-showcase">
-        <div class="container">
-            <div class="video-container">
-                <video src="assets/didvideofinal.mp4" controls playsinline muted loop autoplay aria-label="Dot It Down Features video"></video>
-            </div>
-        </div>
-    </section>
+       <!-- 5. A DAY, DOTTED DOWN 
+       <section class="a-day" id="a-day">
 
-    <section class="feature-detail" id="features">
-        <div class="container">
-            <h2>Full feature list</h2>
-            <div class="feature-detail-content">
-                <div class="feature-nav">
-                    <div class="feature-item-expandable" data-video="assets/did_on1.mp4">
-                        <div class="feature-nav-item">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M13,7H11V11H7V13H11V17H13V13H17V11H13V7Z"/></svg>
-                            Add new task
-                        </div>
-                        <div class="feature-details">
-                            <ul>
-                                <li>Tap the “+” button to open the new task screen.</li>
-                                <li>Enter your task name and tap Save to quickly add it with default settings.</li>
-                                <li>To set a specific date, time, or other details, tap the corresponding field to update it.</li>
+        </section>-->
+        <!-- 3. WHAT'S NOT IN HERE -->
+        <section class="not-in-here" id="not-in-here">
+            <div class="container">
+                <h2 class="section-title big">DiD does <em>less</em></h2>
+                <p class="section-sub">while delivering more</p>
+                <ul class="no-list">
+                    <li><span class="no-word">no ads</span></li>
+                    <li><span class="no-word">no subscription</span></li>
+                    <li><span class="no-word">no data collection</span></li>
+                    <li><span class="no-word">no ai*</span></li>
+                    <li><span class="no-word">no attention engineering</span></li>
+                    <li><span class="no-word">no investors</span></li>
+                    <li><span class="no-word">no FLUFF</span></li>
+                    <li class="no-really"><span class="no-word">Just you, dotting it down</span></li>
+                </ul>
+                <p class="section-sub">*DiD is built leveraging AI tools, but has no AI features.</p>
+            </div>
+        </section>
+        <!-- 7. PRICING -->
+        <section class="pricing" id="pricing">
+            <div class="container">
+                <div class="pricing-wrap">
+                    <div class="price-card glass-price" data-melt>
+                        <div class="price-col">
+                            <div class="price-stamp">
+                                <span class="price-big">$14.99</span>
+                                <span class="price-once">once.</span>
+                            </div>
+                            <ul class="price-lines">
+                                <li><em>Try it for 3 weeks. See how it fits your day.</em></li>
                             </ul>
-                            <video class="feature-video-inline" playsinline muted loop aria-label="Feature demo"></video>
+                        </div>
+                        <div class="pricing-cta-col">
+                            <a href="https://play.google.com/store/apps/details?id=com.dotitdown.app" class="glass-btn">
+                                <span class="glass-btn__glass" aria-hidden="true"></span>
+                                <span class="glass-btn__edge" aria-hidden="true"></span>
+                                <span class="glass-btn__specular" aria-hidden="true"></span>
+                                <span class="glass-btn__press" aria-hidden="true"></span>
+                                <span class="glass-btn__content">
+                                    <i class="fab fa-google-play" aria-hidden="true"></i>
+                                    Google Play
+                                </span>
+                            </a>
+                            <a href="https://apps.apple.com/us/app/dot-it-down/id6793665202" class="glass-btn">
+                                <span class="glass-btn__glass" aria-hidden="true"></span>
+                                <span class="glass-btn__edge" aria-hidden="true"></span>
+                                <span class="glass-btn__specular" aria-hidden="true"></span>
+                                <span class="glass-btn__press" aria-hidden="true"></span>
+                                <span class="glass-btn__content">
+                                    <i class="fab fa-apple" aria-hidden="true"></i>
+                                    App Store
+                                </span>
+                            </a>
                         </div>
                     </div>
-                    <div class="feature-item-expandable" data-video="assets/did_on2.mp4">
-                        <div class="feature-nav-item">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M13,7H11V11H7V13H11V17H13V13H17V11H13V7Z"/></svg>
-                            Repeating habits
-                        </div>
-                        <div class="feature-details">
-                            <ul>
-                                <li>On the task screen, tap Once to open repeat options. Tap again to close. </li>
-                                <li>Tap the number to increase the frequncey. Press & drag it up or down to adjust it quickly.</li>
-                                <li>Tap on "day" unit to switch the frequency between days, weeks, months, or years.</li>
-                                <li>Tap Save to update your habit.</li>
-                            </ul>
-                            <video class="feature-video-inline" playsinline muted loop aria-label="Feature demo"></video>
-                        </div>
-                    </div>
-                    <div class="feature-item-expandable" data-video="assets/did_on3.mp4">
-                        <div class="feature-nav-item">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M13,7H11V11H7V13H11V17H13V13H17V11H13V7Z"/></svg>
-                            Edit task
-                        </div>
-                        <div class="feature-details">
-                            <ul>
-                                <li>In the list view, tap any task to open it for editing.</li>
-                                <li>Update details as needed and tap Save to confirm your changes.</li>
-                                <li>For recurring tasks, name changes apply to all instances. Other edits affect the selected and future occurrences only.</li>
-                            </ul>
-                            <video class="feature-video-inline" playsinline muted loop aria-label="Feature demo"></video>
-                        </div>
-                    </div>
-                    <div class="feature-item-expandable" data-video="assets/did_on4.mp4">
-                        <div class="feature-nav-item">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M13,7H11V11H7V13H11V17H13V13H17V11H13V7Z"/></svg>
-                            Quick add task
-                        </div>
-                        <div class="feature-details">
-                            <ul>
-                                <li>In the list view, press and hold a day label to instantly add a task for that date.</li>
-                                <li>If you’ve scrolled away from today, tap the floating arrow button to jump back.</li>
-                                <li>Press and hold the arrow button to drag it to your desired spot.</li>
-                            </ul>
-                            <video class="feature-video-inline" playsinline muted loop aria-label="Feature demo"></video>
-                        </div>
-                    </div>   
-                    <div class="feature-item-expandable" data-video="assets/did_on5.mp4">
-                        <div class="feature-nav-item">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M13,7H11V11H7V13H11V17H13V13H17V11H13V7Z"/></svg>
-                            Calendar search
-                        </div>
-                        <div class="feature-details">
-                            <ul>
-                                <li>Tap the calendar icon on the bottom left to open your monthly view.</li>
-                                <li>The calendar displays a heat map of your task load. The deeper the color, the more tasks you have for that day.</li>
-                                <li>Tap a date to jump to the list view for that day.</li>
-                                <li>Use the search bar to find any task and check its completion status at a glance.</li>
-                            </ul>
-                            <video class="feature-video-inline" playsinline muted loop aria-label="Feature demo"></video>
-                        </div>
-                    </div>
-                    <div class="feature-item-expandable" data-video="assets/did_on6.mp4">
-                        <div class="feature-nav-item">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M13,7H11V11H7V13H11V17H13V13H17V11H13V7Z"/></svg>
-                            Homescreen widget
-                        </div>
-                        <div class="feature-details">
-                            <ul>
-                                <li>Add the Dot It Down widget to your home screen to track daily progress at a glance.</li>
-                                <li>The widget shows your remaining tasks for the day. A progress ring fills up as you complete them.</li>
-                            </ul>
-                            <video class="feature-video-inline" playsinline muted loop aria-label="Feature demo"></video>
-                        </div>
-                    </div>
-                </div>
-                <div class="feature-display">
-                    <video class="feature-video" playsinline muted loop aria-label="Feature demo" src="assets/did_on0.mp4"></video>
+            </div>
+        </section>
+        <!-- 8. TESTIMONIALS -->
+        <section class="say" id="say">
+            <div class="container">
+                <h2 class="section-title big">What people say</h2>
+                <p class="section-sub">A few notes from people who use DiD</p>
+                <div class="say-grid">
+                    <figure class="say-card">
+                        <blockquote>"A really cool feature is when you slide a task to the right, it completes it. It's satisfying to slide."</blockquote>
+                        <figcaption>Diya M. on an <span class="say-device">Android device</span></figcaption>
+                    </figure>
+                    <figure class="say-card">
+                        <blockquote>"Have found DID an easy to use, no fuss app that has made remembering my To Do list very convenient to follow."</blockquote>
+                        <figcaption>Pippa N. on a <span class="say-device">OnePlus 12</span></figcaption>
+                    </figure>
+                    <figure class="say-card">
+                        <blockquote>"Quick-add makes adding tasks so frictionless. I love that incomplete tasks are auto-pushed to the next day."</blockquote>
+                        <figcaption>Tracy LB. on an <span class="say-device">Iphone 17</span></figcaption>
+                    </figure>
+                    <figure class="say-card">
+                        <blockquote>"It's been great to use a really simple task app with no distracting features that lose me as soon as I open it."</blockquote>
+                        <figcaption>Ammani N. <span class="say-device">Samsung S22</span></figcaption>
+                    </figure>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="faq" id="faq">
-        <div class="container">
-            <h2>FAQ</h2>
-            <div class="faq-item">
-                <div class="faq-question">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M13,7H11V11H7V13H11V17H13V13H17V11H13V7Z"/></svg>
-                    How is it private and offline?
-                </div>
-                <div class="faq-answer">
-                   No login required, no data sent to 3rd parties. Turn auto-backup off in the app settings to stop backup to your device account (google/apple) and only store data locally on your device. 
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M13,7H11V11H7V13H11V17H13V13H17V11H13V7Z"/></svg>
-                    How no subscriptions or ads?
-                </div>
-                <div class="faq-answer">
-                    Dot It Down is a one-time purchase of $9 (or equivalent in your currency). It works fully offline, and does not need a subscription or ads to support ongoing server costs.
-                </div>
-            </div>
-        </div>
-    </section>
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div>
-                    <h1 style="color: var(--text-color); font-size: 2rem; margin: 0 0 0 0; line-height: 1;">Quick tasks. Lasting habits.</h1>
-                    <a href="#" class="footer-logo" style="display: block; margin-top: 0.25rem;">DOT IT DOWN</a>
-                    <!---->
-                    <div class="footer-links">
-                        <a href="mailto:contact@dotitdown.app">Contact</a> | <a href="privacy.html">Privacy Policy</a>
+        <!-- FAQ 
+        <section class="faq" id="faq">
+            <div class="container">
+                <h2 class="section-title">A couple things people ask.</h2>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span class="faq-dot"></span>
+                        How is it private and offline?
+                        <span class="faq-toggle">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        Your tasks live on your phone. Optional backups go through your own Apple or Google account. We literally cannot see them. Turn auto-backup off in settings to keep everything on-device.
                     </div>
                 </div>
-                <div class="text-left">
-                    <div class="download-cta">
-                        <a href="https://play.google.com/store/apps/details?id=com.dotitdown.app" class="btn-download" style="margin-top: 0;">
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span class="faq-dot"></span>
+                        Really no subscription?
+                        <span class="faq-toggle">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        Really. It works fully offline, so there's no server cost to pay for. If you like it during the trial, you can buy it for $15( or your local currency equivalent. I have tried to do some PPP costing dependant on where I see people download the app)
+                    </div>
+                </div>
+            </div>
+        </section>
+        -->
+        <!-- 9. FOUNDER -->
+        <section class="founder" id="founder">
+            <div class="container founder-inner">
+                <div class="founder-note">
+                    <p class="founder-eyebrow">DiD Founder</p>
+                    <h2 class="section-title">A note from the 1st user.</h2>
+                    <p>Hi, this is the person behind Dot It Down 👋
+
+                        I built it because I wanted somewhere to put a thought before it fell out of my head. Buy coffee. Call the dentist. That little thing I’d definitely remember later. (I would not.)
+                        
+                        I needed a useful list. Something quick to add to and easy to come back to, with room for changed plans and things I hadn’t gotten around to yet. Keeping track shouldn’t become another thing to keep up with.
+                        
+                        Those needs shaped DiD: simple on purpose, a little colorful, and happy to let you get on with your day. Your tasks stay on your device. No account, no ads, no subscription.
+                        
+                        It’s a small app, made with care. If it helps you carry the day a little lighter, that’s a win.
+                        </p>
+                    <p class="founder-sign">— Ammani</p>
+                </div>
+                <aside class="founder-stats">
+                    <div><span class="big-num">0 crashes</span><span>since launch in Mar, 2026</span></div>
+                    <div><span class="big-num">5 users</span><span>who dot it down daily</span></div>
+                </aside>
+            </div>
+        </section>
+
+                 <!-- 6. THE MOMENTS
+        <section class="moments" id="moments">
+            <div class="container">
+                <h2 class="section-title">The moments.</h2>
+                <p class="section-sub">Not a feature list. A little tour of small, satisfying scenes.</p>
+                <div class="moments-grid">
+                    <article class="moment-card glass-card tilt-a" data-melt>
+                        <div class="moment-video"><video src="assets/did_on1.mp4" playsinline muted loop preload="metadata"></video></div>
+                        <h3>The two-tap catch</h3>
+                        <p>Type "refill prescription." It lands. You're gone.</p>
+                    </article>
+                    <article class="moment-card glass-card tilt-b" data-melt>
+                        <div class="moment-video"><video src="assets/did_on2.mp4" playsinline muted loop preload="metadata"></video></div>
+                        <h3>The graceful repeat</h3>
+                        <p>Habits that reset from the day you actually did them.</p>
+                    </article>
+                    <article class="moment-card glass-card tilt-c" data-melt>
+                        <div class="moment-video"><video src="assets/did_on3.mp4" playsinline muted loop preload="metadata"></video></div>
+                        <h3>The quick fix</h3>
+                        <p>Tap. Edit. Done. No modal maze.</p>
+                    </article>
+                    <article class="moment-card glass-card tilt-a" data-melt>
+                        <div class="moment-video"><video src="assets/did_on4.mp4" playsinline muted loop preload="metadata"></video></div>
+                        <h3>The in-and-out</h3>
+                        <p>Add from the widget without ever opening the app.</p>
+                    </article>
+                    <article class="moment-card glass-card tilt-b" data-melt>
+                        <div class="moment-video"><video src="assets/did_on5.mp4" playsinline muted loop preload="metadata"></video></div>
+                        <h3>The "what was that thing"</h3>
+                        <p>Search the calendar. Find the old task. Sleep easier.</p>
+                    </article>
+                    <article class="moment-card glass-card tilt-c" data-melt>
+                        <div class="moment-video"><video src="assets/did_on6.mp4" playsinline muted loop preload="metadata"></video></div>
+                        <h3>The glance</h3>
+                        <p>Home-screen widget. One look. That's the whole feature.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+        <!-- SUPPORT -->
+        <section class="support" id="support">
+            <div class="container" >
+                   <!--  <h2 class="section-title">Need a hand?</h2>-->
+                    <p class="section-sub">Have questions, feedback, or need some help? Reach out!</p>
+                    <a href="mailto:help@dotitdown.app" class="glass-btn">
+                        <span class="glass-btn__glass" aria-hidden="true"></span>
+                        <span class="glass-btn__edge" aria-hidden="true"></span>
+                        <span class="glass-btn__specular" aria-hidden="true"></span>
+                        <span class="glass-btn__press" aria-hidden="true"></span>
+                        <span class="glass-btn__content">
+                            <i class="fas fa-envelope" aria-hidden="true"></i>
+                            help@dotitdown.app
+                        </span>
+                    </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="download" id="download">
+            <div class="container download-inner">
+                <h2 class="section-title huge">Dot it down.</h2>
+                <p class="section-sub">Catch a thought. Get back to life.</p>
+                <div class="download-buttons">
+                    <a href="https://play.google.com/store/apps/details?id=com.dotitdown.app" class="glass-btn">
+                        <span class="glass-btn__glass" aria-hidden="true"></span>
+                        <span class="glass-btn__edge" aria-hidden="true"></span>
+                        <span class="glass-btn__specular" aria-hidden="true"></span>
+                        <span class="glass-btn__press" aria-hidden="true"></span>
+                        <span class="glass-btn__content">
                             <i class="fab fa-google-play" aria-hidden="true"></i>
-                            Download on Google Play
-                        </a>
-                        <p class="label">30-Day Trial. One Time Payment.</p>
-                    </div>
+                            Google Play
+                        </span>
+                    </a>
+                    <a href="https://apps.apple.com/us/app/dot-it-down/id6793665202" class="glass-btn">
+                        <span class="glass-btn__glass" aria-hidden="true"></span>
+                        <span class="glass-btn__edge" aria-hidden="true"></span>
+                        <span class="glass-btn__specular" aria-hidden="true"></span>
+                        <span class="glass-btn__press" aria-hidden="true"></span>
+                        <span class="glass-btn__content">
+                            <i class="fab fa-apple" aria-hidden="true"></i>
+                            App Store
+                        </span>
+                    </a>
                 </div>
+                <p class="footer-fine">© Dot It Down 2026</p>
             </div>
-        </div>
     </footer>
 
-    <!-- Contact modal (hidden for now; mailto used above – restore id="contact-trigger" and remove .contact-form-hidden to re-enable) -->
-    <div id="contact-modal" class="modal-overlay contact-form-hidden" aria-hidden="true" aria-modal="false" hidden>
+    <div id="contact-modal" class="modal-overlay" aria-hidden="true">
         <div class="modal" role="dialog" aria-labelledby="contact-modal-title">
             <button type="button" class="modal-close" aria-label="Close contact form">&times;</button>
-            <h2 id="contact-modal-title" class="modal-title">Contact</h2>
+            <p class="founder-eyebrow">a note for Adam</p>
+            <h2 id="contact-modal-title" class="modal-title">Say hi.</h2>
             <form id="contact-form" class="contact-form" action="/api/contact" method="POST">
                 <label for="contact-name">Name</label>
                 <input type="text" id="contact-name" name="name" required placeholder="Your name">
@@ -275,12 +491,12 @@
                 <input type="email" id="contact-email" name="email" required placeholder="your@email.com">
                 <label for="contact-category">Category</label>
                 <select id="contact-category" name="category" required>
-                    <option value="">Select a category</option>
-                    <option value="General">General</option>
-                    <option value="Support">Support</option>
-                    <option value="Feedback">Feedback</option>
+                    <option value="">what's this about?</option>
+                    <option value="General">Just saying hi</option>
+                    <option value="Support">Something's broken</option>
+                    <option value="Feedback">A thought about the app</option>
                     <option value="Partnership">Partnership</option>
-                    <option value="Other">Other</option>
+                    <option value="Other">Something else</option>
                 </select>
                 <label for="contact-message">Message</label>
                 <textarea id="contact-message" name="message" rows="4" required placeholder="Your message"></textarea>

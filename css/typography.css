@@ -1,0 +1,41 @@
+/* AppTypography slots — mirrors Material typography.* usage in the Flutter app */
+
+.type-display-large,
+.type-display-medium,
+.type-display-small,
+.type-title-large,
+.type-title-medium {
+    font-family: var(--font-barlow);
+    font-weight: var(--weight-display);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+}
+
+.type-display-large { font-size: var(--type-display-large); color: var(--primary); }
+.type-display-medium { font-size: var(--type-display-medium); color: var(--primary); }
+.type-display-small { font-size: var(--type-display-small); color: var(--primary); }
+.type-title-large { font-size: var(--type-title-large); color: var(--secondary); }
+.type-title-medium { font-size: var(--type-title-medium); color: var(--secondary); }
+
+.type-title-small,
+.type-body-large,
+.type-body-medium,
+.type-body-small,
+.type-label-large,
+.type-label-medium,
+.type-label-small {
+    font-family: var(--font-poppins);
+    color: var(--text);
+}
+
+.type-title-small { font-size: var(--type-title-small); font-weight: var(--weight-body); }
+.type-body-large { font-size: var(--type-body-large); font-weight: var(--weight-body); line-height: 1.55; }
+.type-body-medium { font-size: var(--type-body-medium); font-weight: var(--weight-body); line-height: 1.55; }
+.type-body-small { font-size: var(--type-body-small); font-weight: var(--weight-body); line-height: 1.55; }
+.type-label-large { font-size: var(--type-label-large); font-weight: var(--weight-label); }
+.type-label-medium { font-size: var(--type-label-medium); font-weight: var(--weight-label-emphasis); }
+.type-label-small {
+    font-size: var(--type-label-small);
+    font-weight: var(--weight-label);
+    letter-spacing: var(--tracking-label-small);
+}
