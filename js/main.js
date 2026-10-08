@@ -800,7 +800,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    /* ---------- Squiggle underlines on titles ---------- */
+    /* ---------- Squiggle underlines on titles ---------- 
     document.querySelectorAll('.section-title').forEach(title => {
         if (title.querySelector('.title-squiggle')) return;
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -811,7 +811,7 @@ document.addEventListener('DOMContentLoaded', () => {
         svg.innerHTML = '<path d="M4 10 C 40 2, 70 14, 110 8 S 180 2, 220 11 S 260 6, 276 9"/>';
         title.appendChild(svg);
     });
-
+*/
     /* ---------- Scroll reveals ---------- */
     const revealTargets = document.querySelectorAll(
         '.section-title, .section-sub, .win-card, .moment-card, .day-card, .say-card, .no-list li, .nutrition-card, .price-card, .founder-note, .founder-stats, .download-buttons, .email-signup, .constellation-divider, .a-day, .watch-frame'
