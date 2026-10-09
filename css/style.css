@@ -387,7 +387,7 @@ body:has(.glass-device:hover) .trail-dot,
     justify-content: center;
     padding: var(--space-md) var(--space-lg);
     border-radius: var(--r-lg);
-    font: 600 0.98rem/1 var(--font-poppins);
+    font: 500 0.98rem/1 var(--font-poppins);
     color: var(--porcelain);
     text-decoration: none;
     cursor: pointer;
@@ -1409,7 +1409,7 @@ body:has(.glass-device:hover) .trail-dot,
 /* ============================================================
    SUPPORT
    ============================================================ */
-
+.support .section-sub { margin-bottom: 1.5rem;}
 /* ============================================================
    10. DOWNLOAD + EMAIL
    ============================================================ */
