@@ -973,7 +973,7 @@ body:has(.glass-device:hover) .trail-dot,
 .not-in-here {
     background: var(--porcelain);
     color: var(--text-color);
-    padding: 4.5rem 0 3rem;
+    padding: 4.5rem 0 6rem;
     position: relative;
     overflow: hidden;
     z-index: 4;
