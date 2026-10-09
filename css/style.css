@@ -1427,6 +1427,7 @@ body:has(.glass-device:hover) .trail-dot,
     pointer-events: none;
 }
 .download-inner { position: relative; }
+.download .section-title { margin-bottom: 0rem; }
 .download .section-sub { margin: 0 auto 2.4rem; }
 .download-buttons {
     display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
