@@ -42,6 +42,7 @@ h1, h2, h3, h4, .display {
     text-wrap: balance;
     position: relative;
     display: inline-block;
+    margin-bottom: 3rem;
 }
 .section-title.big { font-size: clamp(2.4rem, 6vw, 4.6rem); }
 .section-title.huge { font-size: clamp(2.6rem, 8vw, 5.6rem); }
@@ -971,7 +972,7 @@ body:has(.glass-device:hover) .trail-dot,
    ============================================================ */
 .not-in-here {
     background: var(--porcelain);
-    color: var(--ink);
+    color: var(--text-color);
     padding: 4.5rem 0 3rem;
     position: relative;
     overflow: hidden;
@@ -984,6 +985,14 @@ body:has(.glass-device:hover) .trail-dot,
         radial-gradient(40% 45% at 100% 0%, rgba(255, 60, 240, 0.12), transparent 60%);
     pointer-events: none;
 }
+.not-in-here p {
+    color: var(--ink-black);
+    font-style: italic;
+    font-size: 1rem;
+    margin-top: 1rem;
+}
+
+
 .no-list {
     list-style: none;
     display: flex; flex-wrap: wrap;
@@ -1028,6 +1037,7 @@ body:has(.glass-device:hover) .trail-dot,
     box-shadow: 3px 3px 0 var(--ink-black);
 }
 .no-list li.no-really .no-word::after { display: none; }
+
 
 /* ============================================================
    5. A DAY
@@ -1354,7 +1364,7 @@ body:has(.glass-device:hover) .trail-dot,
     box-shadow: 8px 10px 0 rgba(30, 14, 46, 0.12);
     transform: rotate(-0.4deg);
 }
-.founder-note .section-title { color: var(--ink-black); margin-bottom: 1.3rem; }
+.founder-note .section-title { color: var(--ink-black); margin-bottom: 1.5rem; }
 .founder-note p {
     color: var(--ink-soft);
     font-size: 1.05rem;
@@ -1544,7 +1554,6 @@ body:has(.glass-device:hover) .trail-dot,
     z-index: 4;
     position: relative;
 }
-.faq .section-title { margin-bottom: 1.5rem; display: block; }
 .faq-item { border-bottom: 1px dashed rgba(30, 14, 46, 0.2); }
 .faq-question {
     width: 100%;
