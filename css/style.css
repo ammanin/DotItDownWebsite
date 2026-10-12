@@ -247,6 +247,7 @@ body:has(.glass-device:hover) .trail-dot,
     height: var(--logo-coin-size);
     border-radius: 50%;
     overflow: hidden;
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
     isolation: isolate;
     background: rgba(255, 60, 240, 0.09);
     box-shadow: 0 0 16px rgba(255, 60, 240, 0.6);
@@ -392,6 +393,7 @@ body:has(.glass-device:hover) .trail-dot,
     text-decoration: none;
     cursor: pointer;
     overflow: hidden;
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
     isolation: isolate;
     border: none;
     background: rgba(155, 48, 255, 0.15);
