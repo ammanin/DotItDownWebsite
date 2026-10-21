@@ -8,7 +8,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
     const PALETTE = ['#9B30FF', '#FF3CF0', '#0063D6', '#FFD700', '#B366FF', '#FF8C00'];
 
+    /* ---------- Animations Toggle State ---------- */
+    let animationsEnabled = localStorage.getItem('did-animations') !== 'false';
+    const animToggle = document.getElementById('sound-toggle');
+    
+    function updateAnimationState() {
+        document.body.classList.toggle('animations-disabled', !animationsEnabled);
+        if (animToggle) {
+            animToggle.setAttribute('aria-pressed', String(animationsEnabled));
+        }
+        localStorage.setItem('did-animations', String(animationsEnabled));
+    }
+    
+    animToggle?.addEventListener('click', () => {
+        animationsEnabled = !animationsEnabled;
+        updateAnimationState();
+    });
+    
+    // Initial sync
+    updateAnimationState();
+
     function spawnParticleBurst(x, y, count = 14) {
+        if (!animationsEnabled) return;
         for (let i = 0; i < count; i++) {
             const el = document.createElement('span');
             el.className = 'particle-burst';
@@ -59,6 +80,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function draw() {
+            if (!animationsEnabled) {
+                skyCtx.clearRect(0, 0, w, h);
+                swirlCtx.clearRect(0, 0, w, h);
+                requestAnimationFrame(draw);
+                return;
+            }
             time += 0.014;
             scrollY = window.scrollY;
             skyCtx.clearRect(0, 0, w, h);
@@ -142,6 +169,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const copy = document.querySelector('.hero-copy');
         if (!demo) return;
         window.addEventListener('mousemove', (e) => {
+            if (!animationsEnabled) {
+                demo.style.transform = '';
+                if (copy) copy.style.transform = '';
+                return;
+            }
             const x = (e.clientX / window.innerWidth - 0.5) * 2;
             const y = (e.clientY / window.innerHeight - 0.5) * 2;
             demo.style.transform = `perspective(900px) rotateY(${x * 4}deg) rotateX(${-y * 3}deg)`;
@@ -153,6 +185,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (reduceMotion) return;
         const cards = document.querySelectorAll('[data-melt]');
         const onScroll = () => {
+            if (!animationsEnabled) {
+                cards.forEach(el => el.style.transform = '');
+                return;
+            }
             const vh = window.innerHeight;
             cards.forEach(el => {
                 const r = el.getBoundingClientRect();
@@ -163,18 +199,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         window.addEventListener('scroll', onScroll, { passive: true });
         onScroll();
-    }
-
-    function initConstellationDivider() {
-        const path = document.getElementById('constellation-path');
-        if (!path || reduceMotion) return;
-        const len = path.getTotalLength?.() || 900;
-        path.style.strokeDasharray = len;
-        path.style.strokeDashoffset = len;
-        const io = new IntersectionObserver(([e]) => {
-            if (e.isIntersecting) path.style.strokeDashoffset = '0';
-        }, { threshold: 0.25 });
-        io.observe(path.closest('.constellation-divider') || path);
     }
 
     function initPriceTilt() {
@@ -193,7 +217,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initLoaderBurst();
     initParallaxHero();
     initMeltCards();
-    initConstellationDivider();
     initPriceTilt();
 
     /* ---------- Loading screen ---------- */
@@ -238,6 +261,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         window.addEventListener('mousemove', e => {
+            if (!animationsEnabled) {
+                document.querySelectorAll('.trail-dot').forEach(d => d.remove());
+                return;
+            }
             mx = e.clientX; my = e.clientY;
             const r = phoneEl?.getBoundingClientRect();
             const overPhone = !!e.target.closest('#demo-phone, .glass-device') ||
@@ -261,9 +288,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         const raf = () => {
-            cx += (mx - cx) * 0.3;
-            cy += (my - cy) * 0.3;
-            cursor.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+            if (animationsEnabled) {
+                cx += (mx - cx) * 0.3;
+                cy += (my - cy) * 0.3;
+                cursor.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+            }
             requestAnimationFrame(raf);
         };
         raf();
@@ -281,40 +310,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /* ---------- Sound toggle ---------- */
-    const soundBtn = document.getElementById('sound-toggle');
-    let soundOn = false;
-    let audioCtx = null;
-    function playTick() {
-        if (!soundOn) return;
-        try {
-            audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-            const o = audioCtx.createOscillator();
-            const g = audioCtx.createGain();
-            o.type = 'sine';
-            o.frequency.setValueAtTime(920, audioCtx.currentTime);
-            o.frequency.exponentialRampToValueAtTime(420, audioCtx.currentTime + 0.09);
-            g.gain.setValueAtTime(0.0001, audioCtx.currentTime);
-            g.gain.exponentialRampToValueAtTime(0.14, audioCtx.currentTime + 0.01);
-            g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.13);
-            o.connect(g).connect(audioCtx.destination);
-            o.start();
-            o.stop(audioCtx.currentTime + 0.14);
-        } catch (_) { /* ignore */ }
-    }
-    soundBtn?.addEventListener('click', () => {
-        soundOn = !soundOn;
-        soundBtn.setAttribute('aria-pressed', String(soundOn));
-        if (soundOn) playTick();
-    });
-
     /* ---------- Interactive mini task list ---------- */
     const list = document.getElementById('demo-list');
-    const form = document.getElementById('demo-add-form');
-    const input = document.getElementById('demo-input');
-    const countEl = document.getElementById('demo-count-num');
-    const tipEl = document.getElementById('demo-tip');
-    const emptyEl = document.getElementById('demo-empty');
     const phone = document.getElementById('demo-phone');
     const dateEl = document.getElementById('demo-date');
     const tomorrowDateEl = document.getElementById('demo-tomorrow-date');
@@ -327,47 +324,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const tomorrow = new Date(now);
         tomorrow.setDate(tomorrow.getDate() + 1);
         tomorrowDateEl.textContent = tomorrow.toLocaleDateString(undefined, { day: 'numeric' });
-    }
-
-    const starterTasks = [
-        { text: 'Water the plants', icon: '🪴' },
-        { text: 'Text mom back', icon: '💬' },
-        { text: 'Pick up the dry cleaning', icon: '👕' },
-    ];
-
-    const tips = [
-        'tip: swipe a task right to complete it →',
-        'nice. try adding another.',
-        'try typing "pizza"',
-        'or drop one of those floating thoughts in.',
-        "that's the whole thing. that's the app.",
-        'imagine this on your phone. that\'s it.',
-    ];
-    let tipIndex = 0;
-    function nextTip() {
-        if (!tipEl) return;
-        tipIndex = (tipIndex + 1) % tips.length;
-        tipEl.style.opacity = 0;
-        setTimeout(() => {
-            tipEl.textContent = tips[tipIndex];
-            tipEl.style.opacity = 1;
-        }, 180);
-    }
-
-    function remainingCount() {
-        return list ? list.querySelectorAll('.demo-task:not(.done)').length : 0;
-    }
-
-    function updateCount() {
-        if (!countEl) return;
-        const n = remainingCount();
-        countEl.textContent = n;
-        if (emptyEl) {
-            const total = list ? list.querySelectorAll('.demo-task').length : 0;
-            const empty = total === 0;
-            emptyEl.hidden = !empty;
-            if (list) list.style.display = empty ? 'none' : 'flex';
-        }
     }
 
     function spawnPop(task) {
@@ -447,11 +403,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         spawnPop(task);
-        playTick();
         const r = task.getBoundingClientRect();
         spawnParticleBurst(r.right - 16, r.top + r.height / 2, 12);
-        updateCount();
-        nextTip();
 
         const parent = task.parentElement;
         if (!parent) return;
@@ -483,9 +436,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentLabel = check.getAttribute('aria-label') || '';
             check.setAttribute('aria-label', currentLabel.replace(/^Mark incomplete/, 'Complete'));
         }
-
-        playTick();
-        updateCount();
 
         const parent = task.parentElement;
         if (!parent) return;
@@ -543,58 +493,9 @@ document.addEventListener('DOMContentLoaded', () => {
     list?.addEventListener('pointerup', endSwipe);
     list?.addEventListener('pointercancel', endSwipe);
 
-    const emojiFor = (text) => {
-        const t = text.toLowerCase();
-        if (/plant|water/.test(t)) return '🪴';
-        if (/mom|dad|text|call|phone/.test(t)) return '💬';
-        if (/dentist|tooth/.test(t)) return '🦷';
-        if (/pill|prescription|meds/.test(t)) return '💊';
-        if (/coffee|brew|espresso/.test(t)) return '☕';
-        if (/dog|walk/.test(t)) return '🐕';
-        if (/book|read|library/.test(t)) return '📚';
-        if (/gym|run|workout/.test(t)) return '🏃';
-        if (/pizza/.test(t)) return '🍕';
-        if (/mail|post|letter|grandma/.test(t)) return '📮';
-        if (/laundry|wash|clean|dry/.test(t)) return '🧺';
-        if (/eat|lunch|dinner|food/.test(t)) return '🥗';
-        if (/birthday|card|gift/.test(t)) return '🎁';
-        if (/car|drive/.test(t)) return '🚗';
-        if (/sleep|nap/.test(t)) return '😴';
-        if (/secret/.test(t)) return '🤫';
-        return '•';
-    };
-
-    function burst(anchor, emoji, count = 8) {
-        const rect = (anchor || document.body).getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        for (let i = 0; i < count; i++) {
-            const p = document.createElement('div');
-            p.className = 'egg-burst';
-            p.textContent = emoji;
-            const angle = (Math.PI * 2 * i) / count + Math.random() * 0.4;
-            const dist = 110 + Math.random() * 70;
-            p.style.setProperty('--dx', `${Math.cos(angle) * dist}px`);
-            p.style.setProperty('--dy', `${Math.sin(angle) * dist - 50}px`);
-            p.style.left = `${cx}px`;
-            p.style.top = `${cy}px`;
-            document.body.appendChild(p);
-            setTimeout(() => p.remove(), 1300);
-        }
-    }
-
-    function addTask(text, icon) {
+    function addTask(text) {
         const val = (text || '').trim();
         if (!val || !list) return;
-
-        if (emptyEl) emptyEl.hidden = true;
-        list.style.display = 'flex';
-
-        if (/\bpizza\b/i.test(val)) burst(form, '🍕');
-        if (/\bcoffee\b/i.test(val)) burst(form, '☕', 6);
-        if (/\bsecret\b/i.test(val)) {
-            if (tipEl) tipEl.textContent = "shhh. you're my favorite visitor.";
-        }
 
         const li = document.createElement('li');
         li.className = 'demo-task added';
@@ -610,16 +511,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             list.appendChild(li);
         }
-
-        updateCount();
-        nextTip();
     }
-
-    form?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        addTask(input.value);
-        input.value = '';
-    });
 
     document.querySelectorAll('.orbit-bubble').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -628,15 +520,6 @@ document.addEventListener('DOMContentLoaded', () => {
             addTask(btn.dataset.task);
         });
     });
-
-    document.getElementById('demo-reset')?.addEventListener('click', () => {
-        list.innerHTML = '';
-        starterTasks.forEach(t => addTask(t.text, t.icon));
-        document.querySelectorAll('.orbit-bubble.used').forEach(t => t.classList.remove('used'));
-        if (tipEl) tipEl.textContent = 'welcome back. catch another thought.';
-    });
-
-    updateCount();
 
     /* ---------- Logo dance easter egg ---------- */
     const logo = document.getElementById('logo-link');
@@ -657,9 +540,15 @@ document.addEventListener('DOMContentLoaded', () => {
         li.addEventListener('click', () => {
             if (li.classList.contains('popped')) return;
             li.classList.add('popped');
-            playTick();
             const r = li.getBoundingClientRect();
             spawnParticleBurst(r.left + r.width / 2, r.top + r.height / 2, 10);
+        });
+    });
+
+    // Reset other buttons in the list when "Just you, dotting it down" is clicked
+    document.querySelector('.no-really')?.addEventListener('click', () => {
+        document.querySelectorAll('.no-list li.popped').forEach(li => {
+            li.classList.remove('popped');
         });
     });
 
@@ -667,7 +556,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.pop-dot').forEach(dot => {
         dot.addEventListener('click', () => {
             dot.classList.toggle('popped');
-            playTick();
         });
     });
 
@@ -678,37 +566,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const expanded = item.classList.toggle('open');
             q.setAttribute('aria-expanded', String(expanded));
         });
-    });
-
-    /* ---------- Email signup ---------- */
-    const emailForm = document.getElementById('email-signup');
-    const emailInput = document.getElementById('email-input');
-    const emailStatus = document.getElementById('email-status');
-    emailForm?.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const v = (emailInput.value || '').trim();
-        if (!v) return;
-        emailStatus.textContent = 'noting that down…';
-        try {
-            const res = await fetch('/api/contact', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-                body: JSON.stringify({
-                    name: 'Newsletter',
-                    email: v,
-                    category: 'Newsletter',
-                    message: 'Please add me to the occasional notes list.'
-                })
-            });
-            const data = await res.json().catch(() => ({}));
-            emailStatus.textContent = data.ok
-                ? 'noted. no spam, promise.'
-                : 'noted locally. (the carrier pigeon is napping.)';
-        } catch {
-            emailStatus.textContent = 'noted. no spam, promise.';
-        }
-        emailInput.value = '';
-        setTimeout(() => { emailStatus.textContent = ''; }, 6000);
     });
 
     /* ---------- Contact modal ---------- */
@@ -787,34 +644,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /* ---------- Walkthrough play button ---------- */
-    const watchFrame = document.getElementById('watch-frame');
-    const watchPlay = document.getElementById('watch-play');
-    const watchVideo = document.getElementById('watch-video');
-    watchPlay?.addEventListener('click', () => {
-        watchFrame?.classList.add('is-playing');
-        if (watchVideo) {
-            watchVideo.hidden = false;
-            watchVideo.muted = false;
-            watchVideo.play?.().catch(() => {});
-        }
-    });
-
-    /* ---------- Squiggle underlines on titles ---------- 
-    document.querySelectorAll('.section-title').forEach(title => {
-        if (title.querySelector('.title-squiggle')) return;
-        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.setAttribute('class', 'title-squiggle');
-        svg.setAttribute('viewBox', '0 0 280 16');
-        svg.setAttribute('preserveAspectRatio', 'none');
-        svg.setAttribute('aria-hidden', 'true');
-        svg.innerHTML = '<path d="M4 10 C 40 2, 70 14, 110 8 S 180 2, 220 11 S 260 6, 276 9"/>';
-        title.appendChild(svg);
-    });
-*/
     /* ---------- Scroll reveals ---------- */
     const revealTargets = document.querySelectorAll(
-        '.section-title, .section-sub, .win-card, .moment-card, .day-card, .say-card, .no-list li, .nutrition-card, .price-card, .founder-note, .founder-stats, .download-buttons, .email-signup, .constellation-divider, .a-day, .watch-frame'
+        '.section-title, .section-sub, .day-card, .say-card, .no-list li, .price-card, .founder-note, .founder-stats, .download-buttons, .constellation-divider'
     );
     revealTargets.forEach(el => el.classList.add('reveal'));
 
@@ -826,17 +658,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, { threshold: 0.12 });
     revealTargets.forEach(el => io.observe(el));
-
-    /* ---------- Play feature clips when in view ---------- */
-    const videos = document.querySelectorAll('.win-video video, .moment-video video');
-    const vio = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            const v = entry.target;
-            if (entry.isIntersecting) v.play?.().catch(() => {});
-            else v.pause?.();
-        });
-    }, { threshold: 0.25 });
-    videos.forEach(v => vio.observe(v));
 
     /* ---------- Count-up stat (months since launch) ---------- */
     const crashStatEl = document.getElementById('crash-free-months');

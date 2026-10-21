@@ -5,30 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#06070E">
     <title>This thought drifted off — Dot It Down</title>
+    <link rel="canonical" href="https://dotitdown.app/404.html">
     <link rel="icon" href="favicon.png" sizes="32x32" type="image/png">
     <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/tokens.css">
     <link rel="stylesheet" href="css/typography.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="loading">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <div id="loading-screen" class="loading-screen" aria-hidden="true">
+        <canvas id="loader-particles" class="loader-particles" aria-hidden="true"></canvas>
+        <div class="loader-orb" aria-label="Loading"></div>
+        <p class="loader-caption">catching a thought…</p>
+    </div>
+
     <div class="void-bg" aria-hidden="true"></div>
     <canvas id="sky-canvas" class="sky-canvas" aria-hidden="true"></canvas>
+    <canvas id="swirl-canvas" class="swirl-canvas" aria-hidden="true"></canvas>
+    <div class="orbit-cursor" aria-hidden="true"></div>
+
     <header class="site-header">
         <div class="container header-inner">
-            <a href="index.html" class="logo"><span class="logo-dot" aria-hidden="true">
-                <span class="logo-dot__glass" aria-hidden="true"></span>
-                <span class="logo-dot__edge" aria-hidden="true"></span>
-                <span class="logo-dot__specular" aria-hidden="true"></span>
-                <span class="logo-dot__plus" aria-hidden="true">+</span>
-            </span> Dot It Down</a>
+            <div class="header-left">
+            <a href="index.html" class="logo" id="logo-link">
+                <span class="logo-dot" aria-hidden="true">
+                    <span class="logo-dot__glass" aria-hidden="true"></span>
+                    <span class="logo-dot__edge" aria-hidden="true"></span>
+                    <span class="logo-dot__specular" aria-hidden="true"></span>
+                    <span class="logo-dot__plus" aria-hidden="true">+</span>
+                </span>
+                DOT IT DOWN
+            </a>
+            <a href="index.html#pricing" class="header-link">
+                Price
+            </a>
+            <a href="index.html#support" class="header-link">
+                Support
+            </a>
+        </div>
+            <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+                <span></span><span></span><span></span>
+            </button>
+
+            <nav class="site-nav" id="site-nav">
+                <ul>
+                    <li>
+                        <a href="https://play.google.com/store/apps/details?id=com.dotitdown.app" class="glass-btn">
+                            <span class="glass-btn__glass" aria-hidden="true"></span>
+                            <span class="glass-btn__edge" aria-hidden="true"></span>
+                            <span class="glass-btn__specular" aria-hidden="true"></span>
+                            <span class="glass-btn__press" aria-hidden="true"></span>
+                            <span class="glass-btn__content">
+                                <i class="fab fa-google-play" aria-hidden="true"></i>
+                                Google Play
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://apps.apple.com/us/app/dot-it-down/id6793665202" class="glass-btn">
+                            <span class="glass-btn__glass" aria-hidden="true"></span>
+                            <span class="glass-btn__edge" aria-hidden="true"></span>
+                            <span class="glass-btn__specular" aria-hidden="true"></span>
+                            <span class="glass-btn__press" aria-hidden="true"></span>
+                            <span class="glass-btn__content">
+                                <i class="fab fa-apple" aria-hidden="true"></i>
+                                App Store
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </header>
-    <main class="lost">
-        <span class="loader-orb lost-orb" aria-hidden="true"></span>
-        <h1 class="display-large">This thought melted into the void.</h1>
-        <p>404 — the page is gone. The idea might still be orbiting somewhere.</p>
-        <a href="index.html" class="btn btn-primary">Pull me back</a>
+    <main class="lost" id="main">
+        <h1 class="display-large">Couldn't catch that thought.</h1>
+        <p>The page you're looking for is no longer here.</p>
+        <a href="index.html" class="glass-btn">Take me home</a>
     </main>
     <script src="js/main.js"></script>
 </body>

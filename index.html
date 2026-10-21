@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Catch a thought in two taps. A warm little to-do app with no streaks, no feed, no guilt. $9 once.">
+    <meta name="description" content="A simple, private task app that helps you catch everyday to-dos and manage repeating habits without turning your life into a productivity system.">
     <meta name="theme-color" content="#06070E">
     <title>Catch a thought. Get back to life.</title>
+    <link rel="canonical" href="https://dotitdown.app/">
     <link rel="icon" href="favicon.png" sizes="32x32" type="image/png">
     <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/tokens.css">
@@ -26,12 +27,10 @@
     <canvas id="sky-canvas" class="sky-canvas" aria-hidden="true"></canvas>
     <canvas id="swirl-canvas" class="swirl-canvas" aria-hidden="true"></canvas>
     <div class="orbit-cursor" aria-hidden="true"></div>
-<!--
-    <button id="sound-toggle" class="sound-toggle" aria-pressed="false" title="Toggle website on screen animations">
+    <button id="sound-toggle" class="sound-toggle" aria-pressed="true" title="Toggle website on screen animations">
         <span class="sound-toggle__dot"></span>
         <span class="sound-toggle__label">Animations</span>
     </button>
--->
     <header class="site-header">
         <div class="container header-inner">
             <div class="header-left">
@@ -165,25 +164,6 @@
                                 </div>
                                 <p class="demo-brand" id="demo-tomorrow-date"></p>
                             </div>
-                            <!--
-                            <div class="demo-empty" id="demo-empty" hidden>
-                                <span class="demo-empty-dot" aria-hidden="true"></span>
-                                <p>all dotted down.</p>
-                                <p class="demo-empty-sub">go live your life.</p>
-                                <button type="button" id="demo-reset">bring them back</button>
-                            </div>
-
-                            <form class="demo-add" id="demo-add-form" autocomplete="off">
-                                <span class="demo-plus" aria-hidden="true">+</span>
-                                <input
-                                    id="demo-input"
-                                    type="text"
-                                    maxlength="60"
-                                    placeholder="a thursday thought…"
-                                    aria-label="Add a task">
-                                <button type="submit" class="demo-submit" aria-label="Add task">↵</button>
-                            </form>     
-                            -->
                         </div>
                     </div>
                 </div>
@@ -252,15 +232,10 @@
         </section>
 
 
-       <!-- 5. A DAY, DOTTED DOWN 
-       <section class="a-day" id="a-day">
-
-        </section>-->
         <!-- 3. WHAT'S NOT IN HERE -->
         <section class="not-in-here" id="not-in-here">
             <div class="container">
                 <h2 class="section-title"> <em>Less</em> to deal with</h2>
-                <!--<p class="section-sub">while delivering more</p> -->
                 <ul class="no-list">
                     <li><span class="no-word">no ads</span></li>
                     <li><span class="no-word">no subscription</span></li>
@@ -335,101 +310,40 @@
             </div>
         </section>
 
-        <!-- FAQ 
-        <section class="faq" id="faq">
-            <div class="container">
-                <h2 class="section-title">A couple things people ask.</h2>
-                <div class="faq-item">
-                    <button class="faq-question" aria-expanded="false">
-                        <span class="faq-dot"></span>
-                        How is it private and offline?
-                        <span class="faq-toggle">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        Your tasks live on your phone. Optional backups go through your own Apple or Google account. We literally cannot see them. Turn auto-backup off in settings to keep everything on-device.
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question" aria-expanded="false">
-                        <span class="faq-dot"></span>
-                        Really no subscription?
-                        <span class="faq-toggle">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        Really. It works fully offline, so there's no server cost to pay for. If you like it during the trial, you can buy it for $15( or your local currency equivalent. I have tried to do some PPP costing dependant on where I see people download the app)
-                    </div>
-                </div>
-            </div>
-        </section>
-        -->
         <!-- 9. FOUNDER -->
         <section class="founder" id="founder">
             <div class="container founder-inner">
                 <div class="founder-note">
                     <p class="founder-eyebrow">DiD Founder</p>
                     <h2 class="section-title">A note from the 1st user.</h2>
-                    <p>Hi, this is the person behind Dot It Down 👋
+                    <p>
+                        Dot It Down was created in December 2025 as a pet project to solve a personal need. I searched extensively for a task/habits app that was simple and fit the way my brain worked. I couldn’t find one that stuck, so I made one.
                         <br>
-                        <br>I built it because I wanted somewhere to put a thought before it fell out of my head. Buy coffee. Call the dentist. That little thing I’d definitely remember later. (I would not.)
-                        
-                        I needed a useful list. Something quick to add to and easy to come back to, with room for changed plans and things I hadn’t gotten around to yet. Keeping track shouldn’t become another thing to keep up with.
-                        
-                        Those needs shaped DiD: simple on purpose, a little colorful, and happy to let you get on with your day. Your tasks stay on your device. No account, no ads, no subscription.
-                        
-                        It’s a small app, made with care. If it helps you carry the day a little lighter, that’s a win.
-                        </p>
-                    <p class="founder-sign">— Ammani</p>
+                        <br>
+                        As I built and used DiD, I realized what I actually needed: a place to quickly drop random chores that popped into my head, and flexibly track non-regular, repeating things like washing my hair, watering plants, and so on. I didn’t want to feel guilty when I fell behind. I wanted a tool, not a system. Something that flexed to my life, not the other way around.
+                        <br>
+                        <br>
+                        I also wanted to build differently. I’ve become increasingly disenchanted with big tech and wanted to try a new model: one driven primarily by usefulness, not investment returns.
+                        <br>
+                        <br>
+                        Dot It Down is now available on Android and iPhone! Use it at your own pace and over time, I hope DiD lightens your mental load 💜
+                        <br>
+                        <br>
+                        ✌🏽
+                        Ammani    
+                    </p>
                 </div>
                 <aside class="founder-stats">
-                    <div><span class="big-num">0 crashes</span><span>since launch in Mar, 2026</span></div>
-                    <div><span class="big-num">5 users</span><span>who dot it down daily</span></div>
+                        <!--<div><span class="big-num">0 crashes</span><span>since launch in Mar, 2026</span></div> 
+                    <div><span class="big-num">5 users</span><span>who dot it down daily</span></div>-->
+                   <img src="assets/founder-portrait.png" alt="Self portrait of the founder" class="founder-gif">
                 </aside>
             </div>
         </section>
 
-                 <!-- 6. THE MOMENTS
-        <section class="moments" id="moments">
-            <div class="container">
-                <h2 class="section-title">The moments.</h2>
-                <p class="section-sub">Not a feature list. A little tour of small, satisfying scenes.</p>
-                <div class="moments-grid">
-                    <article class="moment-card glass-card tilt-a" data-melt>
-                        <div class="moment-video"><video src="assets/did_on1.mp4" playsinline muted loop preload="metadata"></video></div>
-                        <h3>The two-tap catch</h3>
-                        <p>Type "refill prescription." It lands. You're gone.</p>
-                    </article>
-                    <article class="moment-card glass-card tilt-b" data-melt>
-                        <div class="moment-video"><video src="assets/did_on2.mp4" playsinline muted loop preload="metadata"></video></div>
-                        <h3>The graceful repeat</h3>
-                        <p>Habits that reset from the day you actually did them.</p>
-                    </article>
-                    <article class="moment-card glass-card tilt-c" data-melt>
-                        <div class="moment-video"><video src="assets/did_on3.mp4" playsinline muted loop preload="metadata"></video></div>
-                        <h3>The quick fix</h3>
-                        <p>Tap. Edit. Done. No modal maze.</p>
-                    </article>
-                    <article class="moment-card glass-card tilt-a" data-melt>
-                        <div class="moment-video"><video src="assets/did_on4.mp4" playsinline muted loop preload="metadata"></video></div>
-                        <h3>The in-and-out</h3>
-                        <p>Add from the widget without ever opening the app.</p>
-                    </article>
-                    <article class="moment-card glass-card tilt-b" data-melt>
-                        <div class="moment-video"><video src="assets/did_on5.mp4" playsinline muted loop preload="metadata"></video></div>
-                        <h3>The "what was that thing"</h3>
-                        <p>Search the calendar. Find the old task. Sleep easier.</p>
-                    </article>
-                    <article class="moment-card glass-card tilt-c" data-melt>
-                        <div class="moment-video"><video src="assets/did_on6.mp4" playsinline muted loop preload="metadata"></video></div>
-                        <h3>The glance</h3>
-                        <p>Home-screen widget. One look. That's the whole feature.</p>
-                    </article>
-                </div>
-            </div>
-        </section>
         <!-- SUPPORT -->
         <section class="support" id="support">
             <div class="container" >
-                   <!--  <h2 class="section-title">Need a hand?</h2>-->
                     <p class="section-sub">Have questions, feedback, or need some help? Reach out!</p>
                     <a href="mailto:help@dotitdown.app" class="glass-btn">
                         <span class="glass-btn__edge" aria-hidden="true"></span>

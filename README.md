@@ -15,7 +15,6 @@ Open http://localhost:8765/
 | Path | Description |
 |------|-------------|
 | `/` (root) | **Current:** app design system + void/starry interactions |
-| `/archive/cozy-redesign-2026/` | Archived cozy notebook redesign (Sep 2026) |
 
 ## Contact form
 
