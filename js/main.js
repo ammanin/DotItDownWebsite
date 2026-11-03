@@ -213,11 +213,74 @@ document.addEventListener('DOMContentLoaded', () => {
         card.addEventListener('mouseleave', () => { card.style.transform = ''; });
     }
 
+    function initScreenshotsScroll() {
+        const wrap = document.getElementById('screenshots-gallery');
+        if (!wrap || reduceMotion) return;
+
+        const stage = wrap.querySelector('.screenshots-stage');
+        const line1 = wrap.querySelector('.screenshots-line[data-line="1"]');
+        const line2 = wrap.querySelector('.screenshots-line[data-line="2"]');
+        const lastCard = wrap.querySelector('.screenshot-card:last-child');
+        const refContainer = document.querySelector('.header-inner') || document.querySelector('.container');
+        if (!stage || !line1 || !line2) return;
+
+        const ALIGN_PHASE = 0.35;
+
+        function update() {
+            if (!animationsEnabled) {
+                stage.style.transform = '';
+                line1.style.transform = '';
+                line2.style.transform = '';
+                return;
+            }
+
+            const rect = wrap.getBoundingClientRect();
+            const stickyTop = 84;
+            const scrollable = wrap.offsetHeight - (window.innerHeight - stickyTop);
+            if (scrollable <= 0) return;
+
+            const rawProgress = (stickyTop - rect.top) / scrollable;
+            const progress = Math.max(0, Math.min(1, rawProgress));
+
+            const startOffset1 = Math.min(120, window.innerWidth * 0.12);
+            const startOffset2 = Math.min(260, window.innerWidth * 0.25);
+
+            const alignProgress = Math.min(1, progress / ALIGN_PHASE);
+            const x1 = startOffset1 * (1 - alignProgress);
+            const x2 = startOffset2 * (1 - alignProgress);
+            line1.style.transform = `translate3d(${x1}px, 0, 0)`;
+            line2.style.transform = `translate3d(${x2}px, 0, 0)`;
+
+            const panProgress = progress <= ALIGN_PHASE
+                ? 0
+                : (progress - ALIGN_PHASE) / (1 - ALIGN_PHASE);
+
+            let maxPan = Math.max(0, stage.scrollWidth - document.documentElement.clientWidth);
+            if (lastCard && refContainer) {
+                const stageLeft = stage.getBoundingClientRect().left;
+                const lastCardRightFromStage = lastCard.getBoundingClientRect().right - stageLeft;
+                const containerStyle = getComputedStyle(refContainer);
+                const containerRightEdge = refContainer.getBoundingClientRect().right - (parseFloat(containerStyle.paddingRight) || 0);
+                maxPan = Math.max(0, lastCardRightFromStage - containerRightEdge);
+            }
+
+            const stageX = -maxPan * panProgress;
+            stage.style.transform = `translate3d(${stageX}px, 0, 0)`;
+        }
+
+        window.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update);
+        window.addEventListener('load', update);
+        animToggle?.addEventListener('click', update);
+        update();
+    }
+
     initCosmicBackground();
     initLoaderBurst();
     initParallaxHero();
     initMeltCards();
     initPriceTilt();
+    initScreenshotsScroll();
 
     /* ---------- Loading screen ---------- */
     const loadingScreen = document.getElementById('loading-screen');

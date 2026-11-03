@@ -97,7 +97,7 @@
                     <!--<p class="eyebrow">a to-do app for the everyday</p>-->
                     <h1 class="hero-title">
                         Catch a thought.<br>
-                        <span class="accent-underline">Get back to life.</span>
+                        Get back to life.
                     </h1>
                     <p class="lede">
                         A simple to-do app for all the little things you’re carrying in your head. Dot them down, knowing they’re there when you’re ready.
@@ -172,7 +172,41 @@
                 <svg viewBox="0 0 1200 240" preserveAspectRatio="none">
                 </svg>
             </div>
-            <div class="container">
+            <div class="screenshots-scroll-wrap" id="screenshots-gallery">
+                <div class="screenshots-sticky">
+                    <div class="screenshots-stage">
+                        <div class="screenshots-heading" aria-label="A few real life screenshots">
+                            <span class="screenshots-line" data-line="0">A few</span>
+                            <span class="screenshots-line" data-line="1">real life</span>
+                            <span class="screenshots-line" data-line="2">screenshots.</span>
+                        </div>
+                        <div class="screenshots-track">
+                            <figure class="screenshot-card">
+                                <img src="assets/Phone%20Screenshots/DID-iOS-Screenshots0.png" alt="Dot It Down app screenshot 1" loading="lazy">
+                            </figure>
+                            <figure class="screenshot-card">
+                                <img src="assets/Phone%20Screenshots/DID-iOS-Screenshots1.png" alt="Dot It Down app screenshot 2" loading="lazy">
+                            </figure>
+                            <figure class="screenshot-card">
+                                <img src="assets/Phone%20Screenshots/DID-iOS-Screenshots2.png" alt="Dot It Down app screenshot 3" loading="lazy">
+                            </figure>
+                            <figure class="screenshot-card">
+                                <img src="assets/Phone%20Screenshots/DID-iOS-Screenshots3.png" alt="Dot It Down app screenshot 4" loading="lazy">
+                            </figure>
+                            <figure class="screenshot-card">
+                                <img src="assets/Phone%20Screenshots/DID-iOS-Screenshots4.png" alt="Dot It Down app screenshot 5" loading="lazy">
+                            </figure>
+                            <figure class="screenshot-card">
+                                <img src="assets/Phone%20Screenshots/DID-iOS-Screenshots5.png" alt="Dot It Down app screenshot 6" loading="lazy">
+                            </figure>
+                            <figure class="screenshot-card">
+                                <img src="assets/Phone%20Screenshots/DID-iOS-Screenshots6.png" alt="Dot It Down app screenshot 7" loading="lazy">
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="container">
                 <h2 class="section-title">A day, dotted down</h2>
     
                 <div class="day-rail" aria-hidden="true">
@@ -227,7 +261,7 @@
             <div class="constellation-divider" aria-hidden="true">
                 <svg viewBox="0 0 1200 30" preserveAspectRatio="none">
                 </svg>
-            </div>
+            </div>-->
         </section>
 
 
@@ -285,6 +319,7 @@
                             </a>
                         </div>
                     </div>
+                </div>
             </div>
         </section>
         <!-- 8. TESTIMONIALS -->
@@ -385,34 +420,6 @@
                 <p class="footer-fine">© Dot It Down 2026</p>
             </div>
     </footer>
-
-    <div id="contact-modal" class="modal-overlay" aria-hidden="true">
-        <div class="modal" role="dialog" aria-labelledby="contact-modal-title">
-            <button type="button" class="modal-close" aria-label="Close contact form">&times;</button>
-            <p class="founder-eyebrow">a note for Adam</p>
-            <h2 id="contact-modal-title" class="modal-title">Say hi.</h2>
-            <form id="contact-form" class="contact-form" action="/api/contact" method="POST">
-                <label for="contact-name">Name</label>
-                <input type="text" id="contact-name" name="name" required placeholder="Your name">
-                <label for="contact-email">Email</label>
-                <input type="email" id="contact-email" name="email" required placeholder="your@email.com">
-                <label for="contact-category">Category</label>
-                <select id="contact-category" name="category" required>
-                    <option value="">what's this about?</option>
-                    <option value="General">Just saying hi</option>
-                    <option value="Support">Something's broken</option>
-                    <option value="Feedback">A thought about the app</option>
-                    <option value="Partnership">Partnership</option>
-                    <option value="Other">Something else</option>
-                </select>
-                <label for="contact-message">Message</label>
-                <textarea id="contact-message" name="message" rows="4" required placeholder="Your message"></textarea>
-                <div id="contact-form-status" class="form-status" aria-live="polite"></div>
-                <button type="submit" class="btn-submit">Send</button>
-            </form>
-        </div>
-    </div>
-
     <script src="js/main.js"></script>
 </body>
 </html>
