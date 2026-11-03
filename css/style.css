@@ -952,21 +952,6 @@ display: flex;
     display: block;
 }
 
-body.animations-disabled .screenshots-scroll-wrap {
-    height: auto;
-}
-body.animations-disabled .screenshots-sticky {
-    position: relative;
-    top: 0;
-    height: auto;
-    overflow-x: auto;
-    padding: var(--space-xxl) 0;
-}
-body.animations-disabled .screenshots-line[data-line="1"],
-body.animations-disabled .screenshots-line[data-line="2"] {
-    transform: none;
-}
-
 @media (prefers-reduced-motion: reduce) {
     .screenshots-scroll-wrap { height: auto; }
     .screenshots-sticky {

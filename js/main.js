@@ -227,13 +227,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const ALIGN_PHASE = 0.35;
 
         function update() {
-            if (!animationsEnabled) {
-                stage.style.transform = '';
-                line1.style.transform = '';
-                line2.style.transform = '';
-                return;
-            }
-
             const rect = wrap.getBoundingClientRect();
             const stickyTop = 84;
             const scrollable = wrap.offsetHeight - (window.innerHeight - stickyTop);
@@ -271,7 +264,6 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('scroll', update, { passive: true });
         window.addEventListener('resize', update);
         window.addEventListener('load', update);
-        animToggle?.addEventListener('click', update);
         update();
     }
 
