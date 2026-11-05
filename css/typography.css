@@ -4,7 +4,8 @@
 .type-display-medium,
 .type-display-small,
 .type-title-large,
-.type-title-medium {
+.type-title-medium,
+.type-display-huge {
     font-family: var(--font-barlow);
     font-weight: var(--weight-display);
     line-height: 1.05;

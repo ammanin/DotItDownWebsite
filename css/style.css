@@ -7,6 +7,8 @@
 html { 
     scroll-behavior: smooth; 
     scroll-padding-top: 120px;
+    overflow-x: clip;
+    max-width: 100%;
 }
 body {
     font-family: 'Poppins', system-ui, sans-serif;
@@ -16,6 +18,7 @@ body {
     color: var(--text);
     line-height: 1.55;
     overflow-x: clip;
+    max-width: 100%;
     -webkit-font-smoothing: antialiased;
 }
 img, video { max-width: 100%; display: block; }
@@ -329,6 +332,10 @@ body.animations-disabled .swirl-canvas {
     font-size: 0.98rem;
 }
 
+.nav-mobile-only {
+    display: none;
+}
+
 .nav-toggle {
     display: none;
     width: 42px; height: 42px;
@@ -469,7 +476,7 @@ body.animations-disabled .swirl-canvas {
 }
 .hero::before {
     content: '';
-    position: absolute; inset: -25% -10% auto -10%; height: 150%;
+    position: absolute; inset: -25% 0 auto 0; height: 150%;
     background:
         radial-gradient(55% 50% at 18% 45%, rgba(112, 60, 255, 0.22), transparent 70%),
         radial-gradient(45% 50% at 88% 18%, rgba(222, 59, 251, 0.16), transparent 70%),
@@ -482,6 +489,9 @@ body.animations-disabled .swirl-canvas {
     grid-template-columns: 1.02fr 0.98fr;
     gap: 3rem;
     align-items: center;
+}
+.hero-grid > * {
+    min-width: 0;
 }
 
 .eyebrow {
@@ -524,6 +534,7 @@ body.animations-disabled .swirl-canvas {
     display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem;
 }
 .cta-note {
+    flex-basis: 100%;
     font-size: 0.85rem; color: rgba(255, 252, 249, 0.55);
 }
 
@@ -1410,41 +1421,75 @@ display: flex;
 /* ============================================================
    PRIVACY PAGE
    ============================================================ */
-.page-privacy { background: var(--porcelain); color: var(--ink); }
-.page-privacy .site-header {
-    background: rgba(255, 252, 249, 0.86);
-    border-bottom: 1px solid rgba(30, 14, 46, 0.08);
+.page-privacy {
+    background: var(--light-bg);
+    color: var(--light-text);
+    font-family: var(--font-poppins);
+    font-size: var(--type-body-medium);
+    font-weight: var(--weight-body);
 }
-.page-privacy .logo,
-.page-privacy .site-nav a { color: var(--ink-black); }
-.page-privacy .site-nav a:hover { background: rgba(30, 14, 46, 0.05); }
-.page-privacy .nav-toggle span { background: var(--ink-black); }
-.privacy-hero { padding: 3.5rem 0 1.5rem; }
-.privacy-hero .hero-title { color: var(--ink-black); font-size: clamp(2.4rem, 5vw, 4rem); }
-.privacy-hero .container,
-.privacy-content { max-width: 760px; }
-.privacy-content { padding-bottom: 4rem; }
+.page-privacy main {
+    background: var(--light-bg);
+    color: var(--light-text);
+    position: relative;
+    z-index: 4;
+}
+.privacy-hero {
+    padding: var(--space-xxl) 0 var(--space-lg);
+}
+.privacy-hero .founder-eyebrow {
+    font-family: var(--font-barlow);
+    font-size: var(--type-title-medium);
+    font-weight: var(--weight-title);
+    color: var(--secondary);
+    margin-bottom: var(--space-xs);
+}
+.privacy-hero .hero-title {
+    font-family: var(--font-barlow);
+    font-weight: var(--weight-display);
+    font-size: var(--type-display-large);
+    color: var(--primary);
+    margin-bottom: 0;
+}
+.privacy-content {
+    padding-bottom: var(--space-xxl);
+}
 .privacy-content h2 {
     font-family: var(--font-barlow);
-    color: var(--ink-black);
-    font-size: 1.6rem;
-    margin: 2rem 0 0.7rem;
+    font-weight: var(--weight-title);
+    color: var(--light-text);
+    font-size: var(--type-title-large);
+    margin: var(--space-xl) 0 var(--space-sm);
 }
 .privacy-content h3 {
     font-family: var(--font-barlow);
-    color: var(--void-deep);
-    font-size: 1.1rem;
-    margin: 1.1rem 0 0.4rem;
+    font-weight: var(--weight-title);
+    color: var(--primary);
+    font-size: var(--type-title-medium);
+    margin: var(--space-md) 0 var(--space-xs);
 }
 .privacy-content p,
 .privacy-content li {
-    color: var(--ink-soft);
-    margin-bottom: 0.75rem;
+    font-family: var(--font-poppins);
+    font-size: var(--type-body-medium);
+    font-weight: var(--weight-body);
+    color: var(--light-muted);
+    margin-bottom: var(--space-sm);
 }
-.privacy-content ul { padding-left: 1.2rem; margin-bottom: 1rem; }
-.privacy-content a { color: var(--ink-black); font-weight: 600; }
-.page-privacy .site-footer {
-    background: var(--ink-black);
+.privacy-content strong {
+    color: var(--light-text);
+    font-weight: var(--weight-label);
+}
+.privacy-content ul {
+    padding-left: var(--space-lg);
+    margin-bottom: var(--space-md);
+}
+.privacy-content a {
+    color: var(--primary);
+    font-weight: var(--weight-label);
+}
+.privacy-pdf {
+    margin-top: var(--space-xl);
 }
 
 /* ============================================================
@@ -1522,11 +1567,49 @@ display: flex;
     .footer-inner { grid-template-columns: 1fr; }
     .footer-fine { text-align: center; }
     .footer-dots { justify-content: flex-start; }
-    .orbit-bubble { display: none; }
     .hero-demo { min-height: 0; }
+    .pricing-wrap .price-card { gap: 3rem; }
+    .orbit-bubble.ob-tap {
+        top: -45px !important;
+        left: 60% !important;
+    }
+}
+
+/* Homepage — Tablet / iPad only */
+@media (min-width: 600px) and (max-width: 980px) {
+    .page-home .hero-title {
+        white-space: nowrap;
+        font-size: clamp(1.85rem, 4.8vw, 3.2rem);
+    }
+    .page-home .hero-title br {
+        display: none;
+    }
+    .page-home .lede {
+        max-width: none;
+        text-wrap: wrap;
+    }
+    .page-home .hero-demo {
+        width: min(500px, 100%);
+        margin: 0 auto;
+    }
+    .page-home .screenshots-stage {
+        gap: calc(var(--space-xxl) * 9);
+    }
+    .page-home .screenshot-card {
+        width: clamp(320px, 45vw, 420px);
+        padding: var(--space-sm); /* Using system token instead of --space-xs */
+        border-radius: var(--r-xl); /* Using a larger system radius token */
+    }
+    .page-home .screenshots-heading {
+        font-size: clamp(2.6rem, 8vw, 5.6rem);
+        line-height: 1.8;
+    }
 }
 
 @media (max-width: 780px) {
+    .hero-demo .orbit-bubble {
+        z-index: 3;
+    }
     .nav-toggle {
         display: flex;
         position: relative;
@@ -1562,7 +1645,6 @@ display: flex;
     .site-nav ul { flex-direction: column; align-items: flex-start; gap: 0.65rem; }
     .site-nav a:not(.glass-btn) { display: block; }
     .site-nav a.glass-btn { display: inline-flex; }
-    .page-privacy .site-nav { background: rgba(255, 252, 249, 0.98); }
     .say-grid { grid-template-columns: 1fr; }
     .day-strip { grid-template-columns: 1fr; }
     .day-card:nth-child(1),
@@ -1571,13 +1653,14 @@ display: flex;
     .day-card:nth-child(4),
     .say-card { transform: none; }
     .no-list li { font-size: 1.35rem; }
-    .price-big { font-size: 5.2rem; }
-    .price-once { font-size: 2rem; }
+    .price-big { font-size: clamp(3.6rem, 14vw, 5.2rem); }
+    .price-once { font-size: clamp(1.5rem, 6vw, 2rem); }
     .pricing-wrap .price-card {
         max-width: 100%;
         width: 100%;
         flex-direction: column;
         gap: 2.4rem;
+        padding: 2.5rem 1.25rem;
     }
     .pricing-cta-col {
         width: 100%;
@@ -1589,6 +1672,21 @@ display: flex;
     }
     .hero { padding: 2.4rem 0 3rem; }
     .sky-canvas { display: none; }
+}
+
+@media (max-width: 600px) {
+    .header-left .header-link {
+        display: none;
+    }
+    .nav-mobile-only {
+        display: block;
+    }
+    .site-nav .header-link {
+        font-family: var(--font-barlow);
+        font-weight: var(--weight-display);
+        font-size: var(--type-title-medium);
+        padding: 0.5rem 0.9rem;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1655,6 +1753,15 @@ display: flex;
     border-color: var(--gold);
 }
 .orbit-bubble.used { opacity: 0; transform: scale(0.3) translateY(30px); pointer-events: none; }
+.orbit-bubble.ob-tap {
+    /* Desktop: Positioned above the "Catch a thought" text */
+    /* Since it's inside the right column (hero-demo), we shift it left and up */
+    top: 15px; 
+    left: -99%; 
+    transform: rotate(-4deg);
+    animation: orbit-drift 5s ease-in-out infinite;
+    z-index: 10;
+}
 .orbit-bubble.ob1 { top: 5%; left: -6%; animation: orbit-drift 7s ease-in-out infinite; }
 .orbit-bubble.ob2 { top: 14%; right: -8%; animation: orbit-drift 8s ease-in-out infinite 0.5s; }
 .orbit-bubble.ob3 { bottom: 18%; left: -10%; animation: orbit-drift 9s ease-in-out infinite 1s; }
