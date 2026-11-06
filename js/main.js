@@ -268,7 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initCosmicBackground();
-    initLoaderBurst();
+    //initLoaderBurst();
     initParallaxHero();
     initMeltCards();
     initPriceTilt();
