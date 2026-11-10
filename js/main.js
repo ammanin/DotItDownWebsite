@@ -782,6 +782,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /* ---------- Hero rotating word ---------- */
+    const heroWordContainer = document.getElementById('hero-word');
+    if (heroWordContainer && !reduceMotion) {
+        const words = heroWordContainer.querySelectorAll('span');
+        let currentIndex = 0;
+
+        setInterval(() => {
+            if (!animationsEnabled || document.hidden || words.length < 2) return;
+            const currentWord = words[currentIndex];
+            const nextIndex = (currentIndex + 1) % words.length;
+            const nextWord = words[nextIndex];
+
+            // 1. Fade & drift out the current word (350ms)
+            currentWord.classList.remove('is-active');
+            currentWord.classList.add('is-exiting');
+            currentWord.setAttribute('aria-hidden', 'true');
+
+            // 2. Wait for exit (350ms) + a calm breathing gap (120ms) before entering next word
+            setTimeout(() => {
+                currentWord.classList.remove('is-exiting');
+                nextWord.classList.add('is-active');
+                nextWord.removeAttribute('aria-hidden');
+                currentIndex = nextIndex;
+            }, 470);
+        }, 3200);
+    }
+
     /* ---------- Smooth-scroll anchors ---------- */
     document.querySelectorAll('a[href^="#"]').forEach(a => {
         a.addEventListener('click', (e) => {
