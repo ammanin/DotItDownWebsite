@@ -353,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
         raf();
         const interactive = 'a, button, input, textarea, select, .orbit-bubble';
         document.addEventListener('mouseover', e => {
-            if (e.target.closest('#demo-phone, .glass-device')) {
+            if (e.target.closest('#demo-phone, .glass-device') || isOverPhoneRect) {
                 cursor.classList.add('is-hidden');
                 cursor.classList.remove('is-active');
                 return;
