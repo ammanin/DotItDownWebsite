@@ -725,15 +725,7 @@ body.animations-disabled .swirl-canvas {
     box-sizing: border-box;
 }
 .demo-check:hover { background: rgba(255, 60, 240, 0.14); transform: scale(1.12); }
-.demo-check::after {
-    content: '';
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    background: var(--pink);
-    opacity: 0;
-    transform: scale(0);
-    transition: transform .25s var(--spring), opacity .25s;
-}
+
 .demo-check.checked {
     border-color: var(--primary);
     background-color: var(--primary);

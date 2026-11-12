@@ -351,7 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
             requestAnimationFrame(raf);
         };
         raf();
-        const interactive = 'a, button, input, textarea, select, .demo-task, .demo-check, .orbit-bubble, .pop-dot';
+        const interactive = 'a, button, input, textarea, select, .orbit-bubble';
         document.addEventListener('mouseover', e => {
             if (e.target.closest('#demo-phone, .glass-device')) {
                 cursor.classList.add('is-hidden');
@@ -381,17 +381,6 @@ document.addEventListener('DOMContentLoaded', () => {
         tomorrowDateEl.textContent = tomorrow.toLocaleDateString(undefined, { day: 'numeric' });
     }
 
-    function spawnPop(task) {
-        const pop = document.createElement('span');
-        pop.className = 'dot-pop';
-        const r = task.getBoundingClientRect();
-        const pr = phone?.getBoundingClientRect();
-        if (!pr) return;
-        pop.style.left = (r.left - pr.left + 18) + 'px';
-        pop.style.top = (r.top - pr.top + 18) + 'px';
-        phone.appendChild(pop);
-        setTimeout(() => pop.remove(), 450);
-    }
 
     function moveTaskWithFlip(task, reorderFn) {
         const parent = task?.parentElement;
@@ -456,8 +445,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentLabel = check.getAttribute('aria-label') || '';
             check.setAttribute('aria-label', currentLabel.replace(/^Complete/, 'Mark incomplete'));
         }
-
-        spawnPop(task);
         const r = task.getBoundingClientRect();
         spawnParticleBurst(r.right - 16, r.top + r.height / 2, 12);
 
